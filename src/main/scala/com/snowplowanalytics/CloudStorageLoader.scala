@@ -2,10 +2,13 @@ package com.snowplowanalytics
 
 import com.spotify.scio._
 import org.apache.beam.sdk.io.{Compression, FileBasedSink, TextIO}
+import org.apache.beam.sdk.io.fs.ResourceId
 import org.apache.beam.sdk.io.gcp.pubsub.PubsubIO
 import org.apache.beam.sdk.options.PipelineOptionsFactory
-import org.apache.beam.sdk.values.PDone
-import org.joda.time.Duration
+import org.apache.beam.sdk.options.ValueProvider.{NestedValueProvider, StaticValueProvider}
+import org.apache.beam.sdk.transforms.SerializableFunction
+import org.apache.beam.sdk.transforms.windowing.{FixedWindows, Window}
+import org.joda.time.{Duration, Instant}
 
 object CloudStorageLoader {
   def main(args: Array[String]): Unit = {
@@ -23,19 +26,29 @@ object CloudStorageLoader {
     val sc = ScioContext(options)
 
     val input = sc.pubsubSubscription[String](options.getInputSubscription).withName("input")
+      .applyTransform(
+        Window.into(FixedWindows.of(Duration.standardMinutes(options.getWindowDuration)))
+      )
 
-    val windowed = input
-      .withFixedWindows(Duration.standardMinutes(options.getWindowDuration)).withName("windowed")
-
-    windowed
+    input
       .saveAsCustomOutput("output", TextIO.write()
         .withWindowedWrites
         .withNumShards(options.getNumShards)
-        .withSuffix(options.getOutputFilenameSuffix)
-        .withShardNameTemplate("SSSS-NNNN")
         .withWritableByteChannelFactory(
           FileBasedSink.CompressionType.fromCanonical(Compression.BZIP2))
-        .to(options.getOutputPath)
+        .withTempDirectory(NestedValueProvider.of(
+          StaticValueProvider.of(options.getOutputDirectory),
+          new SerializableFunction[String, ResourceId] {
+            def apply(input: String): ResourceId =
+              FileBasedSink.convertToFileResourceIfPossible(input)
+          }
+        ))
+        .to(WindowedFilenamePolicy(
+          options.getOutputDirectory,
+          options.getOutputFilenamePrefix,
+          options.getShardTemplate,
+          options.getOutputFilenameSuffix
+        ))
       )
 
     sc.close()

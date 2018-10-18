@@ -4,6 +4,9 @@ import Keys._
 val scioVersion = "0.6.1"
 val beamVersion = "2.6.0"
 val scalaMacrosVersion = "2.1.1"
+val slf4jVersion = "1.7.25"
+val scalatestVersion = "3.0.5"
+val mockitoVersion = "2.23.0"
 
 lazy val compilerOptions = Seq(
   "-target:jvm-1.8",
@@ -49,7 +52,9 @@ lazy val root: Project = project
       "com.spotify" %% "scio-core" % scioVersion,
       "com.spotify" %% "scio-test" % scioVersion % Test,
       "org.apache.beam" % "beam-runners-google-cloud-dataflow-java" % beamVersion,
-      "org.slf4j" % "slf4j-simple" % "1.7.25"
+      "org.slf4j" % "slf4j-simple" % slf4jVersion,
+      "org.scalatest" %% "scalatest" % scalatestVersion % Test,
+      "org.mockito" % "mockito-core" % mockitoVersion % Test
     )
   )
   .enablePlugins(PackPlugin)
