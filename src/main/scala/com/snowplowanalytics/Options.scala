@@ -20,7 +20,7 @@ trait Options extends PipelineOptions with StreamingOptions {
   def setOutputFilenamePrefix(value: String): Unit
 
   @Description("The shard template which will be part of the filennams")
-  @Default.String("W-P-SSSSS-of-NNNNN")
+  @Default.String("-W-P-SSSSS-of-NNNNN")
   def getShardTemplate: String
   def setShardTemplate(value: String): Unit
 
@@ -33,6 +33,11 @@ trait Options extends PipelineOptions with StreamingOptions {
   @Default.Integer(5)
   def getWindowDuration: Int
   def setWindowDuration(value: Int): Unit
+
+  @Description("The compression used (gzip, bz2 or none), bz2 can't be loaded into BigQuery")
+  @Default.String("none")
+  def getCompression: String
+  def setCompression(value: String): Unit
 
   @Description("The maximum number of output shards produced when writing")
   @Default.Integer(1)

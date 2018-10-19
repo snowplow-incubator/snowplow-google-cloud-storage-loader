@@ -54,5 +54,6 @@ final case class WindowedFilenamePolicy(
   private def dateFormat(t: DateTime): String => String =
     ((s: String) => s.replace("YYYY", DateTimeFormat.forPattern("YYYY").print(t))) andThen
       ((s: String) => s.replace("MM", DateTimeFormat.forPattern("MM").print(t))) andThen
-      ((s: String) => s.replace("DD", DateTimeFormat.forPattern("DD").print(t)))
+      ((s: String) => s.replace("dd", DateTimeFormat.forPattern("dd").print(t))) andThen
+      ((s: String) => s.replace("HH", DateTimeFormat.forPattern("HH").print(t)))
 }

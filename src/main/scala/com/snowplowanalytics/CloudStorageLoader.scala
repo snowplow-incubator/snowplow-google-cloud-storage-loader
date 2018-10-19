@@ -35,7 +35,7 @@ object CloudStorageLoader {
         .withWindowedWrites
         .withNumShards(options.getNumShards)
         .withWritableByteChannelFactory(
-          FileBasedSink.CompressionType.fromCanonical(Compression.BZIP2))
+          FileBasedSink.CompressionType.fromCanonical(getCompression(options.getCompression)))
         .withTempDirectory(NestedValueProvider.of(
           StaticValueProvider.of(options.getOutputDirectory),
           new SerializableFunction[String, ResourceId] {
@@ -52,5 +52,11 @@ object CloudStorageLoader {
       )
 
     sc.close()
+  }
+
+  private def getCompression(s: String): Compression = s.trim.toLowerCase match {
+    case "bz2" => Compression.BZIP2
+    case "gzip" => Compression.GZIP
+    case _ => Compression.UNCOMPRESSED
   }
 }
