@@ -5,13 +5,14 @@ import org.apache.beam.sdk.io.{Compression, FileBasedSink, TextIO}
 import org.apache.beam.sdk.io.fs.ResourceId
 import org.apache.beam.sdk.io.gcp.pubsub.PubsubIO
 import org.apache.beam.sdk.options.PipelineOptionsFactory
-import org.apache.beam.sdk.options.ValueProvider.{NestedValueProvider, StaticValueProvider}
+import org.apache.beam.sdk.options.ValueProvider.NestedValueProvider
 import org.apache.beam.sdk.transforms.SerializableFunction
 import org.apache.beam.sdk.transforms.windowing.{FixedWindows, Window}
-import org.joda.time.{Duration, Instant}
+import org.joda.time.Duration
 
 object CloudStorageLoader {
   def main(args: Array[String]): Unit = {
+    PipelineOptionsFactory.register(classOf[Options])
     val options = PipelineOptionsFactory
       .fromArgs(args: _*)
       .withValidation
@@ -25,19 +26,14 @@ object CloudStorageLoader {
   def run(options: Options): Unit = {
     val sc = ScioContext(options)
 
-    val input = sc.pubsubSubscription[String](options.getInputSubscription).withName("input")
-      .applyTransform(
-        Window.into(FixedWindows.of(Duration.standardMinutes(options.getWindowDuration)))
-      )
-
-    input
-      .saveAsCustomOutput("output", TextIO.write()
+    val inputIO = PubsubIO.readStrings().fromSubscription(options.getInputSubscription)
+    val outputIO = TextIO.write()
         .withWindowedWrites
         .withNumShards(options.getNumShards)
         .withWritableByteChannelFactory(
           FileBasedSink.CompressionType.fromCanonical(getCompression(options.getCompression)))
         .withTempDirectory(NestedValueProvider.of(
-          StaticValueProvider.of(options.getOutputDirectory),
+          options.getOutputDirectory,
           new SerializableFunction[String, ResourceId] {
             def apply(input: String): ResourceId =
               FileBasedSink.convertToFileResourceIfPossible(input)
@@ -49,7 +45,14 @@ object CloudStorageLoader {
           options.getShardTemplate,
           options.getOutputFilenameSuffix
         ))
-      )
+
+
+    sc
+      .customInput("input", inputIO)
+      .applyTransform(
+        Window.into(FixedWindows.of(Duration.standardMinutes(options.getWindowDuration.toLong)))
+      ).withName("windowed")
+      .saveAsCustomOutput("output", outputIO)
 
     sc.close()
   }
