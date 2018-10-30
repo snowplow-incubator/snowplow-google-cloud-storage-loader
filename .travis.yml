@@ -1,0 +1,34 @@
+language: scala
+services:
+- docker
+scala:
+- 2.11.12
+jdk:
+- oraclejdk8
+script:
+- sbt test
+before_deploy:
+- pip install --user release-manager==0.3.0
+deploy:
+  - provider: script
+    skip_cleanup: true
+    script: release-manager --config ./.travis/release.yml --check-version --make-version --make-artifact --upload-artifact
+    on:
+      tags: true
+  - provider: script
+    skip_cleanup: true
+    script: ./.travis/deploy_docker.sh $TRAVIS_TAG
+    on:
+      tags: true
+  - provider: script
+    skip_cleanup: true
+    script: ./.travis/deploy_template.sh $TRAVIS_TAG
+    on:
+      tags: true
+env:
+global:
+  - BINTRAY_SNOWPLOW_GENERIC_USER
+  - BINTRAY_SNOWPLOW_GENERIC_API_KEY
+  - BINTRAY_SNOWPLOW_DOCKER_USER
+  - BINTRAY_SNOWPLOW_DOCKER_API_KEY
+  - GCP_CREDENTIALS

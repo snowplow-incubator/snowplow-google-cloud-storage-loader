@@ -26,7 +26,6 @@ lazy val compilerOptions = Seq(
 
 lazy val commonSettings = Defaults.coreDefaultSettings ++ Seq(
   organization := "com.snowplowanalytics",
-  // Semantic versioning http://semver.org/
   version := "0.1.0-SNAPSHOT",
   scalaVersion := "2.12.7",
   scalacOptions ++= compilerOptions,
@@ -40,12 +39,19 @@ lazy val macroSettings = Seq(
   addCompilerPlugin(paradiseDependency)
 )
 
+import com.typesafe.sbt.packager.docker._
+dockerRepository := Some("snowplow-docker-registry.bintray.io")
+dockerUsername := Some("snowplow")
+dockerBaseImage := "snowplow-docker-registry.bintray.io/snowplow/base-debian:0.1.0"
+maintainer in Docker := "Snowplow Analytics Ltd. <support@snowplowanalytics.com>"
+daemonUser in Docker := "snowplow"
+
 lazy val root: Project = project
   .in(file("."))
   .settings(commonSettings)
   .settings(macroSettings)
   .settings(
-    name := "snowplow-cloud-storage-loader",
+    name := "cloud-storage-loader",
     description := "Snowplow Google Cloud Storage Loader",
     publish / skip := true,
     libraryDependencies ++= Seq(
@@ -57,7 +63,7 @@ lazy val root: Project = project
       "org.mockito" % "mockito-core" % mockitoVersion % Test
     )
   )
-  .enablePlugins(PackPlugin)
+  .enablePlugins(JavaAppPackaging)
 
 lazy val repl: Project = project
   .in(file(".repl"))
