@@ -10,7 +10,7 @@ cd ${TRAVIS_BUILD_DIR}
 
 project_version=$(sbt -no-colors version | perl -ne 'print "$1\n" if /info.*(\d+\.\d+\.\d+[^\r\n]*)/' | tail -n 1 | tr -d '\n')
 if [[ "${tag}" = *"${project_version}" ]]; then
-    sbt "runMain com.snowplowanalytics.CloudStorageLoader --project=engineering-sandbox \
+    sbt "runMain com.snowplowanalytics.storage.cloudstorage.loader.CloudStorageLoader --project=engineering-sandbox \
       --templateLocation=gs://snowplow-hosted-assets/4-storage/cloud-storage-loader/${tag}/CloudStorageLoaderTemplate-${tag} \
       --stagingLocation=gs://snowplow-hosted-assets/4-storage/cloud-storage-loader/${tag}/staging \
       --runner=DataflowRunner \

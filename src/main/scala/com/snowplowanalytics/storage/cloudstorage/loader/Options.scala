@@ -1,8 +1,23 @@
-package com.snowplowanalytics
+/*
+ * Copyright (c) 2018-2018 Snowplow Analytics Ltd. All rights reserved.
+ *
+ * This program is licensed to you under the Apache License Version 2.0,
+ * and you may not use this file except in compliance with the Apache License Version 2.0.
+ * You may obtain a copy of the Apache License Version 2.0 at
+ * http://www.apache.org/licenses/LICENSE-2.0.
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the Apache License Version 2.0 is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License Version 2.0 for the specific language governing permissions and
+ * limitations there under.
+ */
+package com.snowplowanalytics.storage.cloudstorage.loader
 
 import org.apache.beam.sdk.options._
 import org.apache.beam.sdk.options.Validation.Required
 
+/** Trait regrouping the loader's configuration. */
 trait Options extends PipelineOptions with StreamingOptions {
   @Description("The Cloud Pub/Sub subscription to read from")
   @Required
@@ -14,7 +29,7 @@ trait Options extends PipelineOptions with StreamingOptions {
   def getOutputDirectory: ValueProvider[String]
   def setOutputDirectory(value: ValueProvider[String]): Unit
 
-  @Description("The Cloud Storage prefix to output files to")
+  @Description("The prefix to prepend to filenames")
   @Default.String("output")
   @Required
   def getOutputFilenamePrefix: ValueProvider[String]
@@ -30,7 +45,7 @@ trait Options extends PipelineOptions with StreamingOptions {
   def getOutputFilenameSuffix: ValueProvider[String]
   def setOutputFilenameSuffix(value: ValueProvider[String]): Unit
 
-  @Description("The window duration in minutes, defaults to 5")
+  @Description("The window duration in minutes")
   @Default.Integer(5)
   def getWindowDuration: Int
   def setWindowDuration(value: Int): Unit

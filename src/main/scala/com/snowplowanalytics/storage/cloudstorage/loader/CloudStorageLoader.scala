@@ -1,4 +1,18 @@
-package com.snowplowanalytics
+/*
+ * Copyright (c) 2018-2018 Snowplow Analytics Ltd. All rights reserved.
+ *
+ * This program is licensed to you under the Apache License Version 2.0,
+ * and you may not use this file except in compliance with the Apache License Version 2.0.
+ * You may obtain a copy of the Apache License Version 2.0 at
+ * http://www.apache.org/licenses/LICENSE-2.0.
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the Apache License Version 2.0 is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License Version 2.0 for the specific language governing permissions and
+ * limitations there under.
+ */
+package com.snowplowanalytics.storage.cloudstorage.loader
 
 import com.spotify.scio._
 import org.apache.beam.sdk.io.{Compression, FileBasedSink, TextIO}
@@ -10,6 +24,7 @@ import org.apache.beam.sdk.transforms.SerializableFunction
 import org.apache.beam.sdk.transforms.windowing.{FixedWindows, Window}
 import org.joda.time.Duration
 
+/** Dataflow job outputting the content from a Pubsub subscription to a Cloud Storage bucket. */
 object CloudStorageLoader {
   def main(args: Array[String]): Unit = {
     PipelineOptionsFactory.register(classOf[Options])
@@ -57,9 +72,15 @@ object CloudStorageLoader {
     sc.close()
   }
 
-  private def getCompression(s: String): Compression = s.trim.toLowerCase match {
-    case "bz2" => Compression.BZIP2
-    case "gzip" => Compression.GZIP
-    case _ => Compression.UNCOMPRESSED
-  }
+  /**
+   * Tries to parse a string as a [[Compression]], falls back to uncompressed.
+   * @param compression string to parse
+   * @return the parsed compression
+   */
+  private def getCompression(compression: String): Compression =
+    compression.trim.toLowerCase match {
+      case "bz2" => Compression.BZIP2
+      case "gzip" => Compression.GZIP
+      case _ => Compression.UNCOMPRESSED
+    }
 }
