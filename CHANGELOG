@@ -1,0 +1,9 @@
+Version 0.1.0 (2018-11-xx)
+--------------------------
+Add google- into project title (#1)
+Add readme (#9)
+Add CI/CD (#8)
+Make use of ValueProvider for the configuration options (#7)
+Add a compression option (#6)
+Add windowed filename policy (#5)
+Initial version
