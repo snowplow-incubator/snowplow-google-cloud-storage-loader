@@ -15,7 +15,7 @@ targets :
 # Required: packages to be deployed
 packages :
   - repo : "snowplow-generic"
-    name : "snowplow-cloud-storage-loader"
+    name : "snowplow-google-cloud-storage-loader"
     user_org : "snowplow"
     publish : true
     override : false
@@ -26,7 +26,7 @@ packages :
       - sbt universal:packageBin
     artifacts :
       - type : "asis"
-        prefix : "snowplow_cloud_storage_loader_"
+        prefix : "snowplow_google_cloud_storage_loader_"
         suffix : ".zip"
         binary_paths :
-          - "target/universal/cloud-storage-loader-{{ packages.0.build_version }}.zip"
+          - "target/universal/snowplow-google-cloud-storage-loader-{{ packages.0.build_version }}.zip"

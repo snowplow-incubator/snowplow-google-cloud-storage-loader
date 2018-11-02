@@ -51,7 +51,7 @@ lazy val root: Project = project
   .settings(commonSettings)
   .settings(macroSettings)
   .settings(
-    name := "cloud-storage-loader",
+    name := "snowplow-google-cloud-storage-loader",
     description := "Snowplow Google Cloud Storage Loader",
     publish / skip := true,
     libraryDependencies ++= Seq(
@@ -71,7 +71,7 @@ lazy val repl: Project = project
   .settings(macroSettings)
   .settings(
     name := "repl",
-    description := "Scio REPL for snowplow-cloud-storage-loader",
+    description := "Scio REPL for snowplow-google-cloud-storage-loader",
     libraryDependencies ++= Seq(
       "com.spotify" %% "scio-repl" % scioVersion
     ),

@@ -12,14 +12,14 @@
  * See the Apache License Version 2.0 for the specific language governing permissions and
  * limitations there under.
  */
-package com.snowplowanalytics.storage.cloudstorage.loader
+package com.snowplowanalytics.storage.googlecloudstorage.loader
 
 import org.apache.beam.sdk.options._
 import org.apache.beam.sdk.options.Validation.Required
 
 /** Trait regrouping the loader's configuration. */
 trait Options extends PipelineOptions with StreamingOptions {
-  @Description("The Cloud Pub/Sub subscription to read from")
+  @Description("The Cloud Pub/Sub subscription to read from, formatted as projects/[PROJECT]/subscriptions/[SUB]")
   @Required
   def getInputSubscription: ValueProvider[String]
   def setInputSubscription(value: ValueProvider[String]): Unit
