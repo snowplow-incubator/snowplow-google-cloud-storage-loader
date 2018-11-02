@@ -12,7 +12,7 @@
  * See the Apache License Version 2.0 for the specific language governing permissions and
  * limitations there under.
  */
-package com.snowplowanalytics.storage.cloudstorage.loader
+package com.snowplowanalytics.storage.googlecloudstorage.loader
 
 import com.spotify.scio.testing._
 
