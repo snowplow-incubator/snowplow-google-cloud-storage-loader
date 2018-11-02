@@ -1,4 +1,4 @@
-# Cloud Storage Loader
+# Snowplow Google Cloud Storage Loader
 
 ## Introduction
 
@@ -15,9 +15,9 @@ additional flexibility when running your pipeline.
 To upload the template to your own bucket, run:
 
 ```bash
-sbt "runMain com.snowplowanalytics.storage.cloudstorage.loader.CloudStorageLoader \
+sbt "runMain com.snowplowanalytics.storage.googlecloudstorage.loader.CloudStorageLoader \
   --project=[PROJECT] \
-  --templateLocation=gs://[BUCKET]/CloudStorageLoaderTemplate \
+  --templateLocation=gs://[BUCKET]/SnowplowGoogleCloudStorageLoaderTemplate \
   --stagingLocation=gs://[BUCKET]/staging \
   --runner=DataflowRunner \
   --tempLocation=gs://[BUCKET]/tmp"
@@ -55,7 +55,7 @@ Here, we provide an example using `gcloud`:
 
 ```bash
 gcloud dataflow jobs run [JOB-NAME] \
-  --gcs-location gs://snowplow-hosted-assets/4-storage/cloud-storage-loader/0.1.0/CloudStorageLoaderTemplate-0.1.0 \
+  --gcs-location gs://sp-hosted-assets/4-storage/snowplow-google-cloud-storage-loader/0.1.0/SnowplowGoogleCloudStorageLoaderTemplate-0.1.0 \
   --parameters \
     inputSubscription=projects/[PROJECT]/subscriptions/[SUBSCRIPTION],\
     outputDirectory=gs://[BUCKET]/YYYY/MM/dd/HH/,\ # partitions by date
@@ -67,14 +67,14 @@ gcloud dataflow jobs run [JOB-NAME] \
     numShards=1 # optional
 ```
 
-### Directly
+### Through the zip archive
 
 You can find the archive hosted on [our Bintray][bintray].
 
 Once unzipped the artifact can be run as follows:
 
 ```bash
-./bin/cloud-storage-loader \
+./bin/snowplow-google-cloud-storage-loader \
   --runner=DataFlowRunner \
   --project=[PROJECT] \
   --streaming=true \
@@ -92,23 +92,26 @@ Once unzipped the artifact can be run as follows:
 To display the help message:
 
 ```bash
-./bin/cloud-storage-loader --help
+./bin/snowplow-google-cloud-storage-loader --help
 ```
 
 To display documentation about Cloud Storage Loader-specific options:
 
 ```bash
-./bin/cloud-storage-loader --help=com.snowplowanalytics.storage.cloudstorage.loader.Options
+./bin/snowplow-google-cloud-storage-loader --help=com.snowplowanalytics.storage.googlecloudstorage.loader.Options
 ```
 
 ### Through a docker container
+
+You can also find the image on [our Bintray][bintray-docker].
 
 A container can be run as follows:
 
 ```bash
 docker run \
+  -v $PWD/config:/snowplow/config \
   -e GOOGLE_APPLICATION_CREDENTIALS=/snowplow/config/credentials.json \ # if running outside GCP
-  snowplow-docker-registry.bintray.io/snowplow/cloud-storage-loader:0.1.0 \
+  snowplow-docker-registry.bintray.io/snowplow/snowplow-google-cloud-storage-loader:0.1.0 \
   --runner=DataFlowRunner \
   --job-name=[JOB-NAME] \
   --project=[PROJECT] \
@@ -127,15 +130,15 @@ docker run \
 To display the help message:
 
 ```bash
-docker run snowplow-docker-registry.bintray.io/snowplow/cloud-storage-loader:0.1.0 \
+docker run snowplow-docker-registry.bintray.io/snowplow/snowplow-google-cloud-storage-loader:0.1.0 \
   --help
 ```
 
 To display documentation about Cloud Storage Loader-specific options:
 
 ```bash
-docker run snowplow-docker-registry.bintray.io/snowplow/cloud-storage-loader:0.1.0 \
-  --help=com.snowplowanalytics.storage.cloudstorage.loader.Options
+docker run snowplow-docker-registry.bintray.io/snowplow/snowplow-google-cloud-storage-loader:0.1.0 \
+  --help=com.snowplowanalytics.storage.googlecloudstorage.loader.Options
 ```
 
 ### Additional information
@@ -186,11 +189,12 @@ limitations under the License.
 [templates]: https://cloud.google.com/dataflow/docs/templates/overview
 [executing-templates]: https://cloud.google.com/dataflow/docs/templates/executing-templates
 
-[bintray]: https://bintray.com/snowplow/snowplow-generic/snowplow-cloud-storage-loader
+[bintray]: https://bintray.com/snowplow/snowplow-generic/snowplow-google-cloud-storage-loader
+[bintray-docker]: https://bintray.com/snowplow/registry/snowplow%3Asnowplow-google-cloud-storage-loader
 
 [license]: http://www.apache.org/licenses/LICENSE-2.0
 
 [techdocs-image]: https://d3i6fms1cm1j0i.cloudfront.net/github/images/techdocs.png
 [setup-image]: https://d3i6fms1cm1j0i.cloudfront.net/github/images/setup.png
-[techdocs]: https://github.com/snowplow/snowplow/wiki/Cloud-Storage-Loader
-[setup]: https://github.com/snowplow/snowplow/wiki/setting-up-cloud-storage-loader
+[techdocs]: https://github.com/snowplow/snowplow/wiki/Snowplow-Google-Cloud-Storage-Loader
+[setup]: https://github.com/snowplow/snowplow/wiki/setting-up-snowplow-google-cloud-storage-loader
