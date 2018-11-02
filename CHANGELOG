@@ -1,0 +1,13 @@
+Version 0.1.0 (2018-11-23)
+--------------------------
+Initial version
+Add windowed filename policy (#5)
+Make use of ValueProvider for the configuration options (#7)
+Add a compression option (#6)
+Add readme (#9)
+Add CI/CD (#8)
+Hardcode autoscaling algorigthm, initial number of workers, disk size and machine type in the template (#11)
+Add google- into project title (#1)
+Add Bintray credentials to .travis.yml (#2) 
+Add Bintray Docker registry credentials to .travis.yml (#3)
+Add Google Cloud Storage credentials to .travis.yml (#4)
