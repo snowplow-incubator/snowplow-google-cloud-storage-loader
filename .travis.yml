@@ -1,18 +1,20 @@
 language: scala
 services:
-- docker
+  - docker
 scala:
-- 2.11.12
+  - 2.11.12
 jdk:
-- oraclejdk8
+  - oraclejdk8
+before_install:
+  - openssl aes-256-cbc -K $encrypted_a1a0961ea86f_key -iv $encrypted_a1a0961ea86f_iv -in service-account.json.enc -out ${HOME}/service-account.json -d
 script:
-- sbt test
+  - sbt test
 before_deploy:
-- pip install --user release-manager==0.3.0
+  - pip install --user release-manager==0.3.0
 deploy:
   - provider: script
     skip_cleanup: true
-    script: ./.travis/deploy_template.sh $TRAVIS_TAG
+    script: "./.travis/deploy_template.sh $TRAVIS_TAG"
     on:
       tags: true
   - provider: script
@@ -22,7 +24,7 @@ deploy:
       tags: true
   - provider: script
     skip_cleanup: true
-    script: ./.travis/deploy_docker.sh $TRAVIS_TAG
+    script: "./.travis/deploy_docker.sh $TRAVIS_TAG"
     on:
       tags: true
 env:
@@ -31,4 +33,3 @@ global:
   - BINTRAY_SNOWPLOW_GENERIC_API_KEY
   - BINTRAY_SNOWPLOW_DOCKER_USER
   - BINTRAY_SNOWPLOW_DOCKER_API_KEY
-  - GCP_CREDENTIALS
