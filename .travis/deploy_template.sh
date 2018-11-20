@@ -12,7 +12,11 @@ if [[ "${tag}" = *"${project_version}" ]]; then
       --templateLocation=gs://sp-hosted-assets/4-storage/snowplow-google-cloud-storage-loader/${tag}/SnowplowGoogleCloudStorageLoaderTemplate-${tag} \
       --stagingLocation=gs://sp-hosted-assets/4-storage/snowplow-google-cloud-storage-loader/${tag}/staging \
       --runner=DataflowRunner \
-      --tempLocation=gs://sp-hosted-assets/tmp"
+      --tempLocation=gs://sp-hosted-assets/tmp \
+      --autoscalingAlgorithm=THROUGHPUT_BASED \
+      --numWorkers=1 \
+      --diskSizeGb=30 \
+      --workerMachineType=n1-standard-1"
 else
     echo "Tag version '${tag}' doesn't match version in scala project ('${project_version}'). aborting!"
     exit 1
