@@ -1,0 +1,29 @@
+.meta:
+  name: snowplow-google-cloud-storage-loader
+  group: bi
+  repo: snowplow-google-cloud-storage-loader
+  email: bi-data-eng@goeuro.com
+  slack: bi-data-eng
+
+image: eu.gcr.io/goeuro-dev/jenkins-plain:latest
+
+.job_defaults: &job_template
+  image: eu.gcr.io/goeuro-dev/jenkins-plain:latest
+  tags:
+    - fast
+
+stages:
+  - test
+  - qa
+  - prod
+
+unit-tests:
+  tags:
+    - mac
+  <<: *job_template
+  stage: test
+  script: make ci_pr
+
+master:
+  <<: *job_template
+  script: make ci_master
