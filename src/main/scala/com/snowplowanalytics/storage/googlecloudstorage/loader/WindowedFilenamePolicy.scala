@@ -14,32 +14,38 @@
  */
 package com.snowplowanalytics.storage.googlecloudstorage.loader
 
-import org.apache.beam.sdk.io.DefaultFilenamePolicy
-import org.apache.beam.sdk.io.FileBasedSink.{FilenamePolicy, OutputFileHints}
-import org.apache.beam.sdk.io.FileSystems
+import org.apache.beam.sdk.io.FileBasedSink.FilenamePolicy
+import org.apache.beam.sdk.io.{DefaultFilenamePolicy, FileSystems, Compression}
+import org.apache.beam.sdk.io.FileBasedSink.OutputFileHints
+import org.apache.beam.sdk.io.FileIO.Write.FileNaming
 import org.apache.beam.sdk.io.fs.ResolveOptions.StandardResolveOptions
 import org.apache.beam.sdk.io.fs.ResourceId
-import org.apache.beam.sdk.options.ValueProvider
 import org.apache.beam.sdk.options.ValueProvider.StaticValueProvider
-import org.apache.beam.sdk.transforms.windowing.{BoundedWindow, IntervalWindow, PaneInfo}
+import org.apache.beam.sdk.options.ValueProvider
+import org.apache.beam.sdk.transforms.windowing.{IntervalWindow, PaneInfo, BoundedWindow}
 import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat
 
 /**
  * Case class providing a policy on how the output files will be named in the output bucket.
  * It supports only windowed files.
- * @param outputDirectory Cloud Storage directory to output to, must end with a /
+ * @param outputDirectory Cloud Storage directory to output to
  * @param outputFilenamePrefix the prefix with which the filenames will be prepended
  * @param shardTemplate the template controlling how shard numbers will be incorporated into
  * filenames
  * @param outputFilenameSuffix the suffix with which the filenames will be appended
+ * @param dateTemplate the template controlling how date directory will be constructed
+ * @param rowType row type to create directory which rows with same type to put under
  */
 final case class WindowedFilenamePolicy(
-  outputDirectory: ValueProvider[String],
+  outputDirectory: Option[ValueProvider[String]],
   outputFilenamePrefix: ValueProvider[String],
   shardTemplate: ValueProvider[String],
-  outputFilenameSuffix: ValueProvider[String]
-) extends FilenamePolicy {
+  outputFilenameSuffix: ValueProvider[String],
+  dateTemplate: ValueProvider[String],
+  rowType: Option[String]
+) extends FilenamePolicy with FileNaming {
+
   /** Generates a filename from window information, fill possible date templates. */
   override def windowedFilename(
     shardNumber: Int,
@@ -48,8 +54,13 @@ final case class WindowedFilenamePolicy(
     paneInfo: PaneInfo,
     outputFileHints: OutputFileHints
   ): ResourceId = {
-    val outputFile = resolveWithDateTemplates(outputDirectory, window)
-      .resolve(outputFilenamePrefix.get, StandardResolveOptions.RESOLVE_FILE)
+    val outputFile = resolveWithDateTemplates(
+      outputDirectory.map(_.get),
+      rowType,
+      window,
+      dateTemplate.get
+    ).resolve(outputFilenamePrefix.get, StandardResolveOptions.RESOLVE_FILE)
+
     val policy = DefaultFilenamePolicy.fromStandardParameters(
       StaticValueProvider.of(outputFile),
       shardTemplate.get,
@@ -67,23 +78,44 @@ final case class WindowedFilenamePolicy(
   ): ResourceId =
     throw new UnsupportedOperationException("This policy only supports windowed files")
 
+  override def getFilename(
+    window: BoundedWindow,
+    pane: PaneInfo,
+    numShards: Int,
+    shardIndex: Int,
+    compression: Compression
+  ): String =
+    windowedFilename(shardIndex, numShards, window, pane, new OutputFileHints {
+      override def getMimeType: String = null
+      override def getSuggestedFilenameSuffix: String = ""
+    }).toString.stripPrefix("/") ++ compression.getSuggestedSuffix
+
   /**
    * Fill the date templates with actual time information from the window we are in.
-   * @param outputDirectory directory possibly containing date templates
+   * @param outputDirectory Cloud Storage directory to output to
+   * @param rowType row type to create directory which rows with same type to put under
    * @param window time window we are currently in
+   * @param dateTemplate the template controlling how date directory will be constructed
    * @return a resource id with the date templated in
    */
   private def resolveWithDateTemplates(
-    outputDirectory: ValueProvider[String],
-    window: BoundedWindow
+    outputDirectory: Option[String],
+    rowType: Option[String],
+    window: BoundedWindow,
+    dateTemplate: String
   ): ResourceId = {
-    val outputDir = FileSystems.matchNewResource(outputDirectory.get, isDirectory = true)
-
+    val outputDir = (outputDirectory, rowType) match {
+      case (Some(o), Some(t)) => FileSystems.matchNewResource(o, isDirectory = true)
+        .resolve(t, StandardResolveOptions.RESOLVE_DIRECTORY)
+      case (Some(o), None) => FileSystems.matchNewResource(o, isDirectory = true)
+      case (None, Some(t)) => FileSystems.matchNewResource(t, isDirectory = true)
+      case (None, None) => FileSystems.matchNewResource("", isDirectory = true)
+    }
     window match {
       case w: IntervalWindow =>
         val windowEndTime = w.end.toDateTime
-        val outputPath = dateFormat(windowEndTime, outputDir.toString)
-        FileSystems.matchNewResource(outputPath, isDirectory = true)
+        val dateStr = dateFormat(windowEndTime, dateTemplate)
+        outputDir.resolve(dateStr, StandardResolveOptions.RESOLVE_DIRECTORY)
       case _ => outputDir
     }
   }
@@ -101,18 +133,4 @@ final case class WindowedFilenamePolicy(
         (s: String) => s.replace(pattern, DateTimeFormat.forPattern(pattern).print(time))
       }
       .fold(identity[String] _)(_ andThen _)(template)
-}
-
-object WindowedFilenamePolicy {
-  def apply(
-    outputDirectory: String,
-    outputFilenamePrefix: String,
-    shardTemplate: String,
-    outputFilenameSuffix: String
-  ): WindowedFilenamePolicy = WindowedFilenamePolicy(
-    StaticValueProvider.of(outputDirectory),
-    StaticValueProvider.of(outputFilenamePrefix),
-    StaticValueProvider.of(shardTemplate),
-    StaticValueProvider.of(outputFilenameSuffix)
-  )
 }

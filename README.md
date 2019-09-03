@@ -7,23 +7,6 @@ Cloud Storage Loader is a [Dataflow][dataflow] job which dumps events from an in
 
 ## Building
 
-### Cloud Dataflow template
-
-Cloud Storage Loader is compatible with [Dataflow templates][templates] which gives you
-additional flexibility when running your pipeline.
-
-To upload the template to your own bucket, run:
-
-```bash
-sbt "runMain com.snowplowanalytics.storage.googlecloudstorage.loader.CloudStorageLoader \
-  --project=[PROJECT] \
-  --templateLocation=gs://[BUCKET]/SnowplowGoogleCloudStorageLoaderTemplate \
-  --stagingLocation=gs://[BUCKET]/staging \
-  --runner=DataflowRunner \
-  --tempLocation=gs://[BUCKET]/tmp" \
-  --numShards=1
-```
-
 ### Zip archive
 
 To build the zip archive, run:
@@ -41,32 +24,6 @@ sbt docker:publishLocal
 ```
 
 ## Running
-
-### Through the template
-
-You can run Dataflow templates using a variety of means:
-
-- Using the GCP console
-- Using `gcloud`
-- Using the REST API
-
-Refer to [the documentation on executing templates][executing-templates] to know more.
-
-Here, we provide an example using `gcloud`:
-
-```bash
-gcloud dataflow jobs run [JOB-NAME] \
-  --gcs-location gs://sp-hosted-assets/4-storage/snowplow-google-cloud-storage-loader/0.2.0/SnowplowGoogleCloudStorageLoaderTemplate-0.2.0 \
-  --parameters \
-    inputSubscription=projects/[PROJECT]/subscriptions/[SUBSCRIPTION],\
-    outputDirectory=gs://[BUCKET]/YYYY/MM/dd/HH/,\ # partitions by date
-    outputFilenamePrefix=output,\ # optional
-    shardTemplate=-W-P-SSSSS-of-NNNNN,\ # optional
-    outputFilenameSuffix=.txt,\ # optional
-    windowDuration=5,\ # optional, in minutes
-    compression=none,\ # optional, gzip, bz2 or none
-    numShards=1 # optional
-```
 
 ### Through the zip archive
 
@@ -87,7 +44,9 @@ Once unzipped the artifact can be run as follows:
   --outputFilenameSuffix=.txt \ # optional
   --windowDuration=5 \ # optional, in minutes
   --compression=none \ # optional, gzip, bz2 or none
-  --numShards=1 # optional
+  --numShards=1 \ # optional
+  --dateFormat=YYYY/MM/dd/HH/ \ # optional
+  --partitionErrorDirectory=gs://[BUCKET]/[SUBDIR] # optional
 ```
 
 To display the help message:
@@ -125,7 +84,9 @@ docker run \
   --outputFilenameSuffix=.txt \ # optional
   --windowDuration=5 \ # optional, in minutes
   --compression=none \ # optional, gzip, bz2 or none
-  --numShards=1 # optional
+  --numShards=1 \ # optional
+  --dateFormat=YYYY/MM/dd/HH/ \ # optional
+  --partitionErrorDirectory=gs://[BUCKET]/[SUBDIR] # optional
 ```
 
 To display the help message:
@@ -187,8 +148,6 @@ limitations under the License.
 [pubsub]: https://cloud.google.com/pubsub/
 [storage]: https://cloud.google.com/storage/
 [dataflow]: https://cloud.google.com/dataflow/
-[templates]: https://cloud.google.com/dataflow/docs/templates/overview
-[executing-templates]: https://cloud.google.com/dataflow/docs/templates/executing-templates
 
 [bintray]: https://bintray.com/snowplow/snowplow-generic/snowplow-google-cloud-storage-loader
 [bintray-docker]: https://bintray.com/snowplow/registry/snowplow%3Asnowplow-google-cloud-storage-loader
