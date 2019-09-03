@@ -5,24 +5,12 @@
 Cloud Storage Loader is a [Dataflow][dataflow] job which dumps events from an input
 [PubSub][pubsub] subscription into a [Cloud Storage][storage] bucket.
 
+## Partitioning by schema
+
+At Snowplow we use [self-describing-json][self-describing JSON] format to keep a well-defined, type-spec'd data definitions. When used with self-describing JSON, bucket loaders are now able to send each schema-formatted event to applicable schema directory in a tidy directory structure.
+To partition incoming data (`inputSubscription`) by schema enable it by setting a target to store partitioned data - `partitionedOutputDirectory` whereas unpartitioned data will be stored in `outputDirectory`. All subdirectories in output bucket (`partitionedOuptutDirectory`) will be stored within date (`dateFormat`) and schema sorted subdirectories whereas data not partitioned will be stored in `outputDirectory` under date subdirectories.
+
 ## Building
-
-### Cloud Dataflow template
-
-Cloud Storage Loader is compatible with [Dataflow templates][templates] which gives you
-additional flexibility when running your pipeline.
-
-To upload the template to your own bucket, run:
-
-```bash
-sbt "runMain com.snowplowanalytics.storage.googlecloudstorage.loader.CloudStorageLoader \
-  --project=[PROJECT] \
-  --templateLocation=gs://[BUCKET]/SnowplowGoogleCloudStorageLoaderTemplate \
-  --stagingLocation=gs://[BUCKET]/staging \
-  --runner=DataflowRunner \
-  --tempLocation=gs://[BUCKET]/tmp" \
-  --numShards=1
-```
 
 ### Zip archive
 
@@ -42,32 +30,6 @@ sbt docker:publishLocal
 
 ## Running
 
-### Through the template
-
-You can run Dataflow templates using a variety of means:
-
-- Using the GCP console
-- Using `gcloud`
-- Using the REST API
-
-Refer to [the documentation on executing templates][executing-templates] to know more.
-
-Here, we provide an example using `gcloud`:
-
-```bash
-gcloud dataflow jobs run [JOB-NAME] \
-  --gcs-location gs://sp-hosted-assets/4-storage/snowplow-google-cloud-storage-loader/0.2.0/SnowplowGoogleCloudStorageLoaderTemplate-0.2.0 \
-  --parameters \
-    inputSubscription=projects/[PROJECT]/subscriptions/[SUBSCRIPTION],\
-    outputDirectory=gs://[BUCKET]/YYYY/MM/dd/HH/,\ # partitions by date
-    outputFilenamePrefix=output,\ # optional
-    shardTemplate=-W-P-SSSSS-of-NNNNN,\ # optional
-    outputFilenameSuffix=.txt,\ # optional
-    windowDuration=5,\ # optional, in minutes
-    compression=none,\ # optional, gzip, bz2 or none
-    numShards=1 # optional
-```
-
 ### Through the zip archive
 
 You can find the archive hosted on [our Bintray][bintray].
@@ -81,13 +43,15 @@ Once unzipped the artifact can be run as follows:
   --streaming=true \
   --zone=europe-west2-a \
   --inputSubscription=projects/[PROJECT]/subscriptions/[SUBSCRIPTION] \
-  --outputDirectory=gs://[BUCKET]/YYYY/MM/dd/HH/ \ # partitions by date
+  --outputDirectory=gs://[BUCKET] \
   --outputFilenamePrefix=output \ # optional
   --shardTemplate=-W-P-SSSSS-of-NNNNN \ # optional
   --outputFilenameSuffix=.txt \ # optional
   --windowDuration=5 \ # optional, in minutes
   --compression=none \ # optional, gzip, bz2 or none
-  --numShards=1 # optional
+  --numShards=1 \ # optional
+  --dateFormat=YYYY/MM/dd/HH/ \ # optional
+  --partitionedOuptutDirectory=gs://[BUCKET]/[SUBDIR] # optional
 ```
 
 To display the help message:
@@ -119,13 +83,15 @@ docker run \
   --streaming=true \
   --zone=[ZONE] \
   --inputSubscription=projects/[PROJECT]/subscriptions/[SUBSCRIPTION] \
-  --outputDirectory=gs://[BUCKET]/YYYY/MM/dd/HH/ \ # partitions by date
+  --outputDirectory=gs://[BUCKET] \
   --outputFilenamePrefix=output \ # optional
   --shardTemplate=-W-P-SSSSS-of-NNNNN \ # optional
   --outputFilenameSuffix=.txt \ # optional
   --windowDuration=5 \ # optional, in minutes
   --compression=none \ # optional, gzip, bz2 or none
-  --numShards=1 # optional
+  --numShards=1 \ # optional
+  --dateFormat=YYYY/MM/dd/HH/ \ # optional
+  --partitionedOuptutDirectory=gs://[BUCKET]/[SUBDIR] # optional
 ```
 
 To display the help message:
@@ -187,8 +153,7 @@ limitations under the License.
 [pubsub]: https://cloud.google.com/pubsub/
 [storage]: https://cloud.google.com/storage/
 [dataflow]: https://cloud.google.com/dataflow/
-[templates]: https://cloud.google.com/dataflow/docs/templates/overview
-[executing-templates]: https://cloud.google.com/dataflow/docs/templates/executing-templates
+[self-describing-json]: https://snowplowanalytics.com/blog/2014/05/15/introducing-self-describing-jsons/
 
 [bintray]: https://bintray.com/snowplow/snowplow-generic/snowplow-google-cloud-storage-loader
 [bintray-docker]: https://bintray.com/snowplow/registry/snowplow%3Asnowplow-google-cloud-storage-loader
