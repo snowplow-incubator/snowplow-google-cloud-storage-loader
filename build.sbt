@@ -7,6 +7,8 @@ val scalaMacrosVersion = "2.1.1"
 val slf4jVersion = "1.7.29"
 val scalatestVersion = "3.0.8"
 val mockitoVersion = "2.28.2"
+val circe = "0.11.1"
+val igluCore = "0.5.0"
 
 lazy val compilerOptions = Seq(
   "-target:jvm-1.8",
@@ -62,6 +64,8 @@ lazy val root: Project = project
       "com.spotify" %% "scio-core" % scioVersion,
       "com.spotify" %% "scio-test" % scioVersion % Test,
       "org.apache.beam" % "beam-runners-google-cloud-dataflow-java" % beamVersion,
+      "io.circe" %% "circe-parser" % circe,
+      "com.snowplowanalytics" %% "iglu-core-circe" % igluCore,
       "org.slf4j" % "slf4j-simple" % slf4jVersion,
       "org.scalatest" %% "scalatest" % scalatestVersion % Test,
       "org.mockito" % "mockito-core" % mockitoVersion % Test
