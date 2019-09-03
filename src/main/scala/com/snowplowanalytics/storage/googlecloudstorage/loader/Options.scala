@@ -35,6 +35,11 @@ trait Options extends PipelineOptions with StreamingOptions {
   def getOutputFilenamePrefix: ValueProvider[String]
   def setOutputFilenamePrefix(value: ValueProvider[String]): Unit
 
+  @Description("Date format")
+  @Default.String("YYYY/MM/dd/HH")
+  def getDateFormat: ValueProvider[String]
+  def setDateFormat(value: ValueProvider[String]): Unit
+
   @Description("The shard template which will be part of the filennams")
   @Default.String("-W-P-SSSSS-of-NNNNN")
   def getShardTemplate: ValueProvider[String]
@@ -59,4 +64,9 @@ trait Options extends PipelineOptions with StreamingOptions {
   @Default.Integer(0)
   def getNumShards: Int
   def setNumShards(value: Int): Unit
+
+  @Description("The directory for rows which gives error during type partition")
+  @Default.String("")
+  def getPartitionErrorDirectory(): ValueProvider[String]
+  def setPartitionErrorDirectory(value: ValueProvider[String]): Unit
 }
