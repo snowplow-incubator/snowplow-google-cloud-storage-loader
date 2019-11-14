@@ -4,7 +4,7 @@ import Keys._
 val scioVersion = "0.7.4"
 val beamVersion = "2.11.0"
 val scalaMacrosVersion = "2.1.1"
-val slf4jVersion = "1.7.25"
+val slf4jVersion = "1.7.29"
 val scalatestVersion = "3.0.8"
 val mockitoVersion = "2.23.0"
 
