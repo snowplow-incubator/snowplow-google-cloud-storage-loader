@@ -4,7 +4,7 @@ import Keys._
 val scioVersion = "0.7.4"
 val scalaMacrosVersion = "2.1.1"
 val slf4jVersion = "1.7.25"
-val scalatestVersion = "3.0.5"
+val scalatestVersion = "3.0.8"
 val mockitoVersion = "2.23.0"
 
 lazy val compilerOptions = Seq(
