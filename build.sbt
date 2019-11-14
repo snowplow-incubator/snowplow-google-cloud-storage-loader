@@ -1,7 +1,6 @@
 import sbt._
 import Keys._
 
-val beamVersion = "2.6.0"
 val scioVersion = "0.7.4"
 val scalaMacrosVersion = "2.1.1"
 val slf4jVersion = "1.7.25"
@@ -57,7 +56,6 @@ lazy val root: Project = project
     libraryDependencies ++= Seq(
       "com.spotify" %% "scio-core" % scioVersion,
       "com.spotify" %% "scio-test" % scioVersion % Test,
-      "org.apache.beam" % "beam-runners-google-cloud-dataflow-java" % beamVersion,
       "org.slf4j" % "slf4j-simple" % slf4jVersion,
       "org.scalatest" %% "scalatest" % scalatestVersion % Test,
       "org.mockito" % "mockito-core" % mockitoVersion % Test
