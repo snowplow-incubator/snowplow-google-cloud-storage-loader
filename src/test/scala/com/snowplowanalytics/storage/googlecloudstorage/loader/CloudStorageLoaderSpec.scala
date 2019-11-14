@@ -14,6 +14,7 @@
  */
 package com.snowplowanalytics.storage.googlecloudstorage.loader
 
+import com.spotify.scio.io.CustomIO
 import com.spotify.scio.testing._
 
 class CloudStorageLoaderSpec extends PipelineSpec {
