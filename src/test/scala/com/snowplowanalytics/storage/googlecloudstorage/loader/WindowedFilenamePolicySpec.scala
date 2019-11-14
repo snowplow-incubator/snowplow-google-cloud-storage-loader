@@ -26,7 +26,7 @@ import org.joda.time.DateTime
 import org.mockito.Mockito.when
 import org.scalatest.FreeSpec
 import org.scalatest.Matchers._
-import org.scalatest.mockito.MockitoSugar
+import org.scalatestplus.mockito.MockitoSugar
 
 class WindowedFilenamePolicySpec extends FreeSpec with MockitoSugar {
   object TestOutputFileHints extends OutputFileHints {
