@@ -43,8 +43,17 @@ import com.typesafe.sbt.packager.docker._
 dockerRepository := Some("snowplow-docker-registry.bintray.io")
 dockerUsername := Some("snowplow")
 dockerBaseImage := "snowplow-docker-registry.bintray.io/snowplow/base-debian:0.1.0"
+dockerExposedPorts := Seq(9999)
 maintainer in Docker := "Snowplow Analytics Ltd. <support@snowplowanalytics.com>"
 daemonUser in Docker := "snowplow"
+javaOptions in Docker ++= Seq(
+  "-Dcom.sun.management.jmxremote",
+  "-Dcom.sun.management.jmxremote.port=9999",
+  "-Dcom.sun.management.jmxremote.rmi.port=9999",
+  "-Dcom.sun.management.jmxremote.local.only=false",
+  "-Dcom.sun.management.jmxremote.authenticate=false",
+  "-Dcom.sun.management.jmxremote.ssl=false"
+)
 
 lazy val root: Project = project
   .in(file("."))
