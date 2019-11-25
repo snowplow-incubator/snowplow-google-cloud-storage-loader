@@ -1,3 +1,14 @@
+Version 0.1.1 (2019-12-)
+--------------------------
+Bump to 0.1.1 (#28)
+Bump mockito to 2.28.2 (#25)
+Bump slf4j to 1.7.29 (#23)
+Bump scalatest to 3.0.8 (#22)
+Bump beam to 2.11.0 (#21)
+Bump scala to 2.12.10 (#20)
+Extend copyright to 2019 (#26)
+Travis distribution to Trusty (#29)
+
 Version 0.1.0 (2018-11-23)
 --------------------------
 Initial version
