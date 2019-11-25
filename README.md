@@ -20,7 +20,8 @@ sbt "runMain com.snowplowanalytics.storage.googlecloudstorage.loader.CloudStorag
   --templateLocation=gs://[BUCKET]/SnowplowGoogleCloudStorageLoaderTemplate \
   --stagingLocation=gs://[BUCKET]/staging \
   --runner=DataflowRunner \
-  --tempLocation=gs://[BUCKET]/tmp"
+  --tempLocation=gs://[BUCKET]/tmp" \
+  --numShards=1
 ```
 
 ### Zip archive
@@ -55,7 +56,7 @@ Here, we provide an example using `gcloud`:
 
 ```bash
 gcloud dataflow jobs run [JOB-NAME] \
-  --gcs-location gs://sp-hosted-assets/4-storage/snowplow-google-cloud-storage-loader/0.1.0/SnowplowGoogleCloudStorageLoaderTemplate-0.1.0 \
+  --gcs-location gs://sp-hosted-assets/4-storage/snowplow-google-cloud-storage-loader/0.2.0/SnowplowGoogleCloudStorageLoaderTemplate-0.2.0 \
   --parameters \
     inputSubscription=projects/[PROJECT]/subscriptions/[SUBSCRIPTION],\
     outputDirectory=gs://[BUCKET]/YYYY/MM/dd/HH/,\ # partitions by date
@@ -111,7 +112,7 @@ A container can be run as follows:
 docker run \
   -v $PWD/config:/snowplow/config \
   -e GOOGLE_APPLICATION_CREDENTIALS=/snowplow/config/credentials.json \ # if running outside GCP
-  snowplow-docker-registry.bintray.io/snowplow/snowplow-google-cloud-storage-loader:0.1.0 \
+  snowplow-docker-registry.bintray.io/snowplow/snowplow-google-cloud-storage-loader:0.2.0 \
   --runner=DataFlowRunner \
   --jobName=[JOB-NAME] \
   --project=[PROJECT] \
@@ -130,14 +131,14 @@ docker run \
 To display the help message:
 
 ```bash
-docker run snowplow-docker-registry.bintray.io/snowplow/snowplow-google-cloud-storage-loader:0.1.0 \
+docker run snowplow-docker-registry.bintray.io/snowplow/snowplow-google-cloud-storage-loader:0.2.0 \
   --help
 ```
 
 To display documentation about Cloud Storage Loader-specific options:
 
 ```bash
-docker run snowplow-docker-registry.bintray.io/snowplow/snowplow-google-cloud-storage-loader:0.1.0 \
+docker run snowplow-docker-registry.bintray.io/snowplow/snowplow-google-cloud-storage-loader:0.2.0 \
   --help=com.snowplowanalytics.storage.googlecloudstorage.loader.Options
 ```
 
