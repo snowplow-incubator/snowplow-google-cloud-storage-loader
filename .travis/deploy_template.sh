@@ -15,6 +15,7 @@ if [[ "${tag}" = *"${project_version}" ]]; then
       --tempLocation=gs://sp-hosted-assets/tmp \
       --autoscalingAlgorithm=THROUGHPUT_BASED \
       --numWorkers=1 \
+      --numShards=1 \
       --diskSizeGb=30 \
       --workerMachineType=n1-standard-1"
 else
