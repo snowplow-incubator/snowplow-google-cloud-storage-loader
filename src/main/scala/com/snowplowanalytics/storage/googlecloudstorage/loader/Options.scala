@@ -55,8 +55,8 @@ trait Options extends PipelineOptions with StreamingOptions {
   def getCompression: String
   def setCompression(value: String): Unit
 
-  @Description("The maximum number of output shards produced when writing")
-  @Default.Integer(1)
+  @Description("The maximum number of output shards produced when writing. Default: 0 - let runner manage")
+  @Default.Integer(0)
   def getNumShards: Int
   def setNumShards(value: Int): Unit
 }
