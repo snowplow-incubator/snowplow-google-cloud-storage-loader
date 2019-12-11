@@ -71,7 +71,7 @@ A container can be run as follows:
 docker run \
   -v $PWD/config:/snowplow/config \
   -e GOOGLE_APPLICATION_CREDENTIALS=/snowplow/config/credentials.json \ # if running outside GCP
-  snowplow-docker-registry.bintray.io/snowplow/snowplow-google-cloud-storage-loader:0.2.0 \
+  snowplow-docker-registry.bintray.io/snowplow/snowplow-google-cloud-storage-loader:0.3.0 \
   --runner=DataFlowRunner \
   --jobName=[JOB-NAME] \
   --project=[PROJECT] \
@@ -92,14 +92,14 @@ docker run \
 To display the help message:
 
 ```bash
-docker run snowplow-docker-registry.bintray.io/snowplow/snowplow-google-cloud-storage-loader:0.2.0 \
+docker run snowplow-docker-registry.bintray.io/snowplow/snowplow-google-cloud-storage-loader:0.3.0 \
   --help
 ```
 
 To display documentation about Cloud Storage Loader-specific options:
 
 ```bash
-docker run snowplow-docker-registry.bintray.io/snowplow/snowplow-google-cloud-storage-loader:0.2.0 \
+docker run snowplow-docker-registry.bintray.io/snowplow/snowplow-google-cloud-storage-loader:0.3.0 \
   --help=com.snowplowanalytics.storage.googlecloudstorage.loader.Options
 ```
 
