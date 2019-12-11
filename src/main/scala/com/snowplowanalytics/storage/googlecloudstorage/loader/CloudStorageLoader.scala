@@ -44,6 +44,7 @@ object CloudStorageLoader {
       .as(classOf[Options])
 
     options.setStreaming(true)
+    options.setPartitionBySchema(true)
 
     run(options)
   }
