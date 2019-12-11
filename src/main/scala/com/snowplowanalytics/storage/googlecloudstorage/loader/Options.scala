@@ -66,7 +66,7 @@ trait Options extends PipelineOptions with StreamingOptions {
   def setNumShards(value: Int): Unit
 
   @Description("Partition output according to schema")
-  @Default.Boolean(false)
+  @Default.Boolean(true)
   def getPartitionBySchema(): Boolean
   def setPartitionBySchema(value: Boolean): Unit
 
