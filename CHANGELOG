@@ -1,3 +1,9 @@
+Version 0.3.0 (2019-12-XX)
+--------------------------
+Add type partition for bad row partition persistence (#18)
+Bump iglu-core to 0.5.1 (#33)
+Bump circe to 0.11.2 (#35)
+
 Version 0.2.0 (2019-12-11)
 --------------------------
 Set default number of shards to be managed by runner (#27)
