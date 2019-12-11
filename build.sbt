@@ -28,7 +28,7 @@ lazy val compilerOptions = Seq(
 
 lazy val commonSettings = Defaults.coreDefaultSettings ++ Seq(
   organization := "com.snowplowanalytics",
-  version := "0.3.0",
+  version := "0.3.0-rc4",
   scalaVersion := "2.12.10",
   scalacOptions ++= compilerOptions,
   javacOptions ++= Seq("-source", "1.8", "-target", "1.8")
@@ -63,7 +63,6 @@ lazy val root: Project = project
       "io.circe" %% "circe-core" % circe,
       "io.circe" %% "circe-parser" % circe,
       "com.snowplowanalytics" %% "iglu-core-circe" % igluCore,
-      "org.slf4j" % "slf4j-simple" % slf4jVersion,
       "org.scalatest" %% "scalatest" % scalatestVersion % Test,
       "org.mockito" % "mockito-core" % mockitoVersion % Test
     )

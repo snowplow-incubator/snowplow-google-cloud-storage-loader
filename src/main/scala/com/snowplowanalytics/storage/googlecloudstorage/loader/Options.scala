@@ -75,3 +75,4 @@ trait Options extends PipelineOptions with StreamingOptions {
   def getPartitionErrorDirectory(): ValueProvider[String]
   def setPartitionErrorDirectory(value: ValueProvider[String]): Unit
 }
+

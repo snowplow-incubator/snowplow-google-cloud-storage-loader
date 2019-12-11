@@ -25,6 +25,7 @@ import org.apache.beam.sdk.options.ValueProvider
 import org.apache.beam.sdk.transforms.windowing.{IntervalWindow, PaneInfo, BoundedWindow}
 import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat
+import org.slf4j.LoggerFactory
 
 /**
  * Case class providing a policy on how the output files will be named in the output bucket.
@@ -45,6 +46,8 @@ final case class WindowedFilenamePolicy(
   dateTemplate: ValueProvider[String],
   rowType: Option[String]
 ) extends FilenamePolicy with FileNaming {
+  private val logger = LoggerFactory.getLogger(this.getClass)
+  logger.info(s"Using a WindowedFilenamePolicy for $rowType")
 
   /** Generates a filename from window information, fill possible date templates. */
   override def windowedFilename(
@@ -60,7 +63,7 @@ final case class WindowedFilenamePolicy(
       window,
       dateTemplate.get
     ).resolve(outputFilenamePrefix.get, StandardResolveOptions.RESOLVE_FILE)
-
+    logger.info(s"Policy filename: ${outputFile.getFilename()}")
     val policy = DefaultFilenamePolicy.fromStandardParameters(
       StaticValueProvider.of(outputFile),
       shardTemplate.get,
@@ -84,12 +87,12 @@ final case class WindowedFilenamePolicy(
     numShards: Int,
     shardIndex: Int,
     compression: Compression
-  ): String =
+  ): String = {
     windowedFilename(shardIndex, numShards, window, pane, new OutputFileHints {
       override def getMimeType: String = null
       override def getSuggestedFilenameSuffix: String = ""
     }).toString.stripPrefix("/") ++ compression.getSuggestedSuffix
-
+  }
   /**
    * Fill the date templates with actual time information from the window we are in.
    * @param outputDirectory Cloud Storage directory to output to
