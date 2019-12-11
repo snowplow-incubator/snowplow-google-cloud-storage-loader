@@ -1,3 +1,9 @@
+Version 0.3.0 (2020-01-27)
+--------------------------
+Add type partition for bad row partition persistence (#18)
+Bump iglu-core to 0.5.1 (#33)
+Bump circe to 0.11.2 (#35)
+
 Version 0.2.1 (2020-01-21)
 --------------------------
 Change base docker image to k8s-dataflow:0.1.0 (#36)
