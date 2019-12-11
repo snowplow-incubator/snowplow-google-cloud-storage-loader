@@ -19,6 +19,7 @@ import io.circe.parser.parse
 import com.spotify.scio._
 
 import org.joda.time.Duration
+import org.slf4j.LoggerFactory
 
 import org.apache.beam.sdk.coders.StringUtf8Coder
 import org.apache.beam.sdk.io.FileIO.Write.FileNaming
@@ -35,6 +36,7 @@ import com.snowplowanalytics.iglu.core.circe.implicits._
 
 /** Dataflow job outputting the content from a Pubsub subscription to a Cloud Storage bucket. */
 object CloudStorageLoader {
+  private val logger = LoggerFactory.getLogger(this.getClass)
 
   def main(args: Array[String]): Unit = {
     PipelineOptionsFactory.register(classOf[Options])
@@ -68,6 +70,7 @@ object CloudStorageLoader {
 
     if (options.getPartitionBySchema()) {
       // Partition output according to row type
+      logger.debug(s"Partitioning: ${options.getPartitionBySchema()}")
       val outputDynamic = FileIO.writeDynamic[String, String]()
         .by(getRowType(_, partitionErrorDirectory).getName)
         .via(TextIO.sink())
@@ -78,7 +81,8 @@ object CloudStorageLoader {
         .withNaming(new SerializableFunction[String, FileNaming] {
           // Create FileNaming for partition of window which
           // partitioned according to row type
-          override def apply(rowType: String): FileNaming =
+          override def apply(rowType: String): FileNaming ={
+            logger.debug(s"WindowFileNamePolicy(None, $outputFileNamePrefix, $shardTemplate, $outputFilenameSuffix, $dateFormat, Some($rowType))")
             WindowedFilenamePolicy(
               None,
               outputFileNamePrefix,
@@ -86,12 +90,13 @@ object CloudStorageLoader {
               outputFilenameSuffix,
               dateFormat,
               Some(rowType)
-            )
+            )}
         })
       input.saveAsCustomOutput("output", outputDynamic)
     } else {
       // Output to same directory without partitioning
       // according to row type
+      logger.debug(s"Not partitioning: ${options.getPartitionBySchema()}")
       val outputIO = TextIO.write()
         .withWindowedWrites
         .withNumShards(options.getNumShards)
