@@ -8,7 +8,7 @@ val slf4jVersion = "1.7.29"
 val scalatestVersion = "3.0.8"
 val mockitoVersion = "2.28.2"
 val circe = "0.11.1"
-val igluCore = "0.5.0"
+val igluCore = "0.5.1"
 
 lazy val compilerOptions = Seq(
   "-target:jvm-1.8",
