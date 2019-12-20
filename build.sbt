@@ -26,7 +26,7 @@ lazy val compilerOptions = Seq(
 
 lazy val commonSettings = Defaults.coreDefaultSettings ++ Seq(
   organization := "com.snowplowanalytics",
-  version := "0.2.0",
+  version := "0.2.0-GIT-2012191755",
   scalaVersion := "2.12.10",
   scalacOptions ++= compilerOptions,
   javacOptions ++= Seq("-source", "1.8", "-target", "1.8")

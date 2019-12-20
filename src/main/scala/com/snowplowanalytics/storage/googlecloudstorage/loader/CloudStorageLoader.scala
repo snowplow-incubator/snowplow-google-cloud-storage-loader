@@ -42,24 +42,24 @@ object CloudStorageLoader {
     val sc = ScioContext(options)
 
     val inputIO = PubsubIO.readStrings().fromSubscription(options.getInputSubscription)
-    val outputIO = TextIO.write()
-        .withWindowedWrites
-        .withNumShards(options.getNumShards)
-        .withWritableByteChannelFactory(
-          FileBasedSink.CompressionType.fromCanonical(getCompression(options.getCompression)))
-        .withTempDirectory(NestedValueProvider.of(
-          options.getOutputDirectory,
-          new SerializableFunction[String, ResourceId] {
-            def apply(input: String): ResourceId =
-              FileBasedSink.convertToFileResourceIfPossible(input)
-          }
-        ))
-        .to(WindowedFilenamePolicy(
-          options.getOutputDirectory,
-          options.getOutputFilenamePrefix,
-          options.getShardTemplate,
-          options.getOutputFilenameSuffix
-        ))
+    // val outputIO = TextIO.write()
+    //     .withWindowedWrites
+    //     .withNumShards(options.getNumShards)
+    //     .withWritableByteChannelFactory(
+    //       FileBasedSink.CompressionType.fromCanonical(getCompression(options.getCompression)))
+    //     .withTempDirectory(NestedValueProvider.of(
+    //       options.getOutputDirectory,
+    //       new SerializableFunction[String, ResourceId] {
+    //         def apply(input: String): ResourceId =
+    //           FileBasedSink.convertToFileResourceIfPossible(input)
+    //       }
+    //     ))
+    //     .to(WindowedFilenamePolicy(
+    //       options.getOutputDirectory,
+    //       options.getOutputFilenamePrefix,
+    //       options.getShardTemplate,
+    //       options.getOutputFilenameSuffix
+    //     ))
 
 
     sc
@@ -67,7 +67,7 @@ object CloudStorageLoader {
       .applyTransform(
         Window.into(FixedWindows.of(Duration.standardMinutes(options.getWindowDuration.toLong)))
       ).withName("windowed")
-      .saveAsCustomOutput("output", outputIO)
+      // .saveAsCustomOutput("output", outputIO)
 
     sc.close()
   }
