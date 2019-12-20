@@ -17,7 +17,8 @@ if [[ "${tag}" = *"${project_version}" ]]; then
       --numWorkers=1 \
       --numShards=1 \
       --diskSizeGb=30 \
-      --workerMachineType=n1-standard-1"
+      --workerMachineType=n1-standard-1 \
+      --profilingAgentConfiguration=\"{\"APICurated\":\ true}\""
 else
     echo "Tag version '${tag}' doesn't match version in scala project ('${project_version}'). aborting!"
     exit 1
