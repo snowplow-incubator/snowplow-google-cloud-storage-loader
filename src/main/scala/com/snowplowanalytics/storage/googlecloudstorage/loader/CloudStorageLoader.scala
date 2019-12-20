@@ -19,10 +19,12 @@ import org.apache.beam.sdk.io.{Compression, FileBasedSink, TextIO}
 import org.apache.beam.sdk.io.fs.ResourceId
 import org.apache.beam.sdk.io.gcp.pubsub.PubsubIO
 import org.apache.beam.sdk.options.PipelineOptionsFactory
+import org.apache.beam.runners.dataflow.options._
 import org.apache.beam.sdk.options.ValueProvider.NestedValueProvider
 import org.apache.beam.sdk.transforms.SerializableFunction
 import org.apache.beam.sdk.transforms.windowing.{FixedWindows, Window}
 import org.joda.time.Duration
+import scala.collection.JavaConverters._
 
 /** Dataflow job outputting the content from a Pubsub subscription to a Cloud Storage bucket. */
 object CloudStorageLoader {
@@ -33,6 +35,10 @@ object CloudStorageLoader {
       .withValidation
       .as(classOf[Options])
 
+    // val cfg: java.util.Map[String, java.lang.Object] = Map("APICurated" -> true).mapValues(_.asInstanceOf[java.lang.Object]).asJava
+    import java.util.stream._
+    val cfg = new java.util.HashMap[String, Boolean](){{ put("APICurated", true) }}.asInstanceOf[DataflowProfilingOptions.DataflowProfilingAgentConfiguration]
+    options.setProfilingAgentConfiguration(cfg)
     options.setStreaming(true)
 
     run(options)
@@ -42,24 +48,24 @@ object CloudStorageLoader {
     val sc = ScioContext(options)
 
     val inputIO = PubsubIO.readStrings().fromSubscription(options.getInputSubscription)
-    // val outputIO = TextIO.write()
-    //     .withWindowedWrites
-    //     .withNumShards(options.getNumShards)
-    //     .withWritableByteChannelFactory(
-    //       FileBasedSink.CompressionType.fromCanonical(getCompression(options.getCompression)))
-    //     .withTempDirectory(NestedValueProvider.of(
-    //       options.getOutputDirectory,
-    //       new SerializableFunction[String, ResourceId] {
-    //         def apply(input: String): ResourceId =
-    //           FileBasedSink.convertToFileResourceIfPossible(input)
-    //       }
-    //     ))
-    //     .to(WindowedFilenamePolicy(
-    //       options.getOutputDirectory,
-    //       options.getOutputFilenamePrefix,
-    //       options.getShardTemplate,
-    //       options.getOutputFilenameSuffix
-    //     ))
+    val outputIO = TextIO.write()
+        .withWindowedWrites
+        .withNumShards(options.getNumShards)
+        .withWritableByteChannelFactory(
+          FileBasedSink.CompressionType.fromCanonical(getCompression(options.getCompression)))
+        .withTempDirectory(NestedValueProvider.of(
+          options.getOutputDirectory,
+          new SerializableFunction[String, ResourceId] {
+            def apply(input: String): ResourceId =
+              FileBasedSink.convertToFileResourceIfPossible(input)
+          }
+        ))
+        .to(WindowedFilenamePolicy(
+          options.getOutputDirectory,
+          options.getOutputFilenamePrefix,
+          options.getShardTemplate,
+          options.getOutputFilenameSuffix
+        ))
 
 
     sc
@@ -67,7 +73,7 @@ object CloudStorageLoader {
       .applyTransform(
         Window.into(FixedWindows.of(Duration.standardMinutes(options.getWindowDuration.toLong)))
       ).withName("windowed")
-      // .saveAsCustomOutput("output", outputIO)
+      .saveAsCustomOutput("output", outputIO)
 
     sc.close()
   }
