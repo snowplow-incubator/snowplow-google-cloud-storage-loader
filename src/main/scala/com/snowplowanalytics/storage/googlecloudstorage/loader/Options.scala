@@ -16,9 +16,10 @@ package com.snowplowanalytics.storage.googlecloudstorage.loader
 
 import org.apache.beam.sdk.options._
 import org.apache.beam.sdk.options.Validation.Required
+import org.apache.beam.runners.dataflow.options.DataflowPipelineOptions
 
 /** Trait regrouping the loader's configuration. */
-trait Options extends PipelineOptions with StreamingOptions {
+trait Options extends PipelineOptions with DataflowPipelineOptions with StreamingOptions  {
   @Description("The Cloud Pub/Sub subscription to read from, formatted as projects/[PROJECT]/subscriptions/[SUB]")
   @Required
   def getInputSubscription: ValueProvider[String]
