@@ -44,9 +44,13 @@ lazy val macroSettings = Seq(
 import com.typesafe.sbt.packager.docker._
 dockerRepository := Some("snowplow-docker-registry.bintray.io")
 dockerUsername := Some("snowplow")
-dockerBaseImage := "snowplow-docker-registry.bintray.io/snowplow/base-debian:0.1.0"
+dockerBaseImage := "snowplow-docker-registry.bintray.io/snowplow/k8s-dataflow:0.1.0"
 maintainer in Docker := "Snowplow Analytics Ltd. <support@snowplowanalytics.com>"
 daemonUser in Docker := "snowplow"
+dockerCommands := dockerCommands.value.map{
+  case ExecCmd("ENTRYPOINT", args) => ExecCmd("ENTRYPOINT", "docker-entrypoint.sh", args)
+  case e => e
+}
 
 lazy val root: Project = project
   .in(file("."))
