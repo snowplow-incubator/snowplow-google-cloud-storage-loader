@@ -1,3 +1,11 @@
+Version 0.3.0 (2020-01-16)
+--------------------------
+Add type partition for bad row partition persistence (#18)
+Change base docker image to k8s-dataflow:0.1.0 (#36)
+Bump iglu-core to 0.5.1 (#33)
+Bump circe to 0.11.2 (#35)
+Extend copyright to 2020 (#38)
+
 Version 0.2.0 (2019-12-11)
 --------------------------
 Set default number of shards to be managed by runner (#27)
