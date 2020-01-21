@@ -1,3 +1,8 @@
+Version 0.2.1 (2020-01-21)
+--------------------------
+Change base docker image to k8s-dataflow:0.1.0 (#36)
+Extend copyright to 2020 (#38)
+
 Version 0.2.0 (2019-12-11)
 --------------------------
 Set default number of shards to be managed by runner (#27)
