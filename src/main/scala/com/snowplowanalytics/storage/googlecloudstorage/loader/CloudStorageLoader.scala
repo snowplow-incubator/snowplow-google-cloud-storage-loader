@@ -116,7 +116,7 @@ object CloudStorageLoader {
       input.saveAsCustomOutput("output", outputIO)
     }
 
-    sc.close()
+    sc.run()
   }
 
   /**
