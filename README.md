@@ -51,6 +51,7 @@ Once unzipped the artifact can be run as follows:
   --compression=none \ # optional, gzip, bz2 or none
   --numShards=1 \ # optional
   --dateFormat=YYYY/MM/dd/HH/ \ # optional
+  --labels={\"label\": \"value\"} \ #OPTIONAL
   --partitionedOuptutDirectory=gs://[BUCKET]/[SUBDIR] # optional
 ```
 
@@ -91,6 +92,7 @@ docker run \
   --compression=none \ # optional, gzip, bz2 or none
   --numShards=1 \ # optional
   --dateFormat=YYYY/MM/dd/HH/ \ # optional
+  --labels={\"label\": \"value\"} \ #OPTIONAL
   --partitionedOuptutDirectory=gs://[BUCKET]/[SUBDIR] # optional
 ```
 

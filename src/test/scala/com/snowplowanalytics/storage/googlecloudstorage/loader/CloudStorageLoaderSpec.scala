@@ -26,7 +26,7 @@ class CloudStorageLoaderSpec extends PipelineSpec {
   "CloudStorageLoader" should "output a file" in {
     val sub = "projects/project/subscriptions/sub"
     JobTest[CloudStorageLoader.type]
-      .args(s"--inputSubscription=${sub}", "--outputDirectory=gs://out-dir/", "--partitionedOutputDirectory=gs://out-dir/partitioned")
+      .args("--project=test", s"--inputSubscription=${sub}", "--outputDirectory=gs://out-dir/", "--partitionedOutputDirectory=gs://out-dir/partitioned", """--labels={"env": "dev"}""")
       .input(CustomIO[String]("input"), expected)
       .output(CustomIO[String]("output"))(_ should containInAnyOrder(expected))
       .run()
