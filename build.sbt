@@ -1,12 +1,12 @@
 import sbt._
 import Keys._
 
-val scioVersion = "0.7.4"
-val beamVersion = "2.11.0"
+val scioVersion = "0.8.2"
+val beamVersion = "2.19.0"
 val scalaMacrosVersion = "2.1.1"
 val slf4jVersion = "1.7.29"
-val scalatestVersion = "3.0.8"
-val mockitoVersion = "2.28.2"
+val scalatestVersion = "3.1.0"
+val scalatestPlusVersion = s"$scalatestVersion.0"
 val circe = "0.11.2"
 val igluCore = "0.5.1"
 
@@ -68,7 +68,7 @@ lazy val root: Project = project
       "com.snowplowanalytics" %% "iglu-core-circe" % igluCore,
       "org.slf4j" % "slf4j-simple" % slf4jVersion,
       "org.scalatest" %% "scalatest" % scalatestVersion % Test,
-      "org.mockito" % "mockito-core" % mockitoVersion % Test
+      "org.scalatestplus" %% "mockito-3-2" % scalatestPlusVersion % Test
     )
   )
   .enablePlugins(JavaAppPackaging)

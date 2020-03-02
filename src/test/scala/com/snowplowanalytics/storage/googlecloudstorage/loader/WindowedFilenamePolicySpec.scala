@@ -25,11 +25,11 @@ import org.joda.time.DateTime
 
 import org.mockito.Mockito.when
 
-import org.scalatest.FreeSpec
+import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.Matchers._
 import org.scalatestplus.mockito.MockitoSugar
 
-class WindowedFilenamePolicySpec extends FreeSpec with MockitoSugar {
+class WindowedFilenamePolicySpec extends AnyFreeSpec with MockitoSugar {
   object TestOutputFileHints extends OutputFileHints {
     override def getMimeType: String = ""
     override def getSuggestedFilenameSuffix: String = ""
