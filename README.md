@@ -8,7 +8,7 @@ Cloud Storage Loader is a [Dataflow][dataflow] job which dumps events from an in
 ## Partitioning by schema
 
 At Snowplow we use [self-describing-json][self-describing JSON] format to keep a well-defined, type-spec'd data definitions. When used with self-describing JSON, bucket loaders are now able to send each schema-formatted event to applicable schema directory in a tidy directory structure.
-To partition incoming data (`inputSubscription`) by schema enable it by setting a target to store partitioned data - `partitionedOutputDirectory` whereas unpartitioned data will be stored in `outputDirectory`. All subdirectories in output bucket (`partitionedOuptutDirectory`) will be stored within date (`dateFormat`) and schema sorted subdirectories whereas data not partitioned will be stored in `outputDirectory` under date subdirectories.
+To partition incoming data (`inputSubscription`) by schema enable it by setting a target to store partitioned data - `partitionedOutputDirectory` whereas unpartitioned data will be stored in `outputDirectory`. All subdirectories in output bucket (`partitionedOutputDirectory`) will be stored within date (`dateFormat`) and schema sorted subdirectories whereas data not partitioned will be stored in `outputDirectory` under date subdirectories.
 
 ## Building
 
@@ -52,7 +52,7 @@ Once unzipped the artifact can be run as follows:
   --numShards=1 \ # optional
   --dateFormat=YYYY/MM/dd/HH/ \ # optional
   --labels={\"label\": \"value\"} \ #OPTIONAL
-  --partitionedOuptutDirectory=gs://[BUCKET]/[SUBDIR] # optional
+  --partitionedOutputDirectory=gs://[BUCKET]/[SUBDIR] # optional
 ```
 
 To display the help message:
@@ -93,7 +93,7 @@ docker run \
   --numShards=1 \ # optional
   --dateFormat=YYYY/MM/dd/HH/ \ # optional
   --labels={\"label\": \"value\"} \ #OPTIONAL
-  --partitionedOuptutDirectory=gs://[BUCKET]/[SUBDIR] # optional
+  --partitionedOutputDirectory=gs://[BUCKET]/[SUBDIR] # optional
 ```
 
 To display the help message:
