@@ -7,7 +7,7 @@ Cloud Storage Loader is a [Dataflow][dataflow] job which dumps events from an in
 
 ## Partitioning by schema
 
-At Snowplow we use [self-describing-json][self-describing JSON] format to keep a well-defined, type-spec'd data definitions. When used with self-describing JSON, bucket loaders are now able to send each schema-formatted event to applicable schema directory in a tidy directory structure.
+At Snowplow we use [self-describing-json][self-describing-json] format to keep a well-defined, type-spec'd data definitions. When used with self-describing JSON, bucket loaders are now able to send each schema-formatted event to applicable schema directory in a tidy directory structure.
 To partition incoming data (`inputSubscription`) by schema enable it by setting a target to store partitioned data - `partitionedOutputDirectory` whereas unpartitioned data will be stored in `outputDirectory`. All subdirectories in output bucket (`partitionedOuptutDirectory`) will be stored within date (`dateFormat`) and schema sorted subdirectories whereas data not partitioned will be stored in `outputDirectory` under date subdirectories.
 
 ## Building
@@ -32,7 +32,7 @@ sbt docker:publishLocal
 
 ### Through a docker container
 
-You can also find the image on [Docker hub][docker-hub].
+You can find the image on [Docker hub][docker-hub].
 
 A container can be run as follows:
 
@@ -97,10 +97,10 @@ sbt repl/run
 
 ## Find out more
 
-| Technical Docs              | Setup Guide           |
-|-----------------------------|-----------------------|
-| ![i1][techdocs-image]       | ![i2][setup-image]    |
-| [Technical Docs][techdocs]  | [Setup Guide][setup]  |
+| Technical Docs              | Setup Guide           | Roadmap               | Contributing                  |
+|:---------------------------:|:---------------------:|:---------------------:|:-----------------------------:|
+| ![i1][techdocs-image]      | ![i2][setup-image]   | ![i3][roadmap-image] | ![i4][contributing-image]    |
+| [Technical Docs][techdocs] | [Setup Guide][setup] | [Roadmap][roadmap]   | [Contributing][contributing] |
 
 ## Copyright and license
 
@@ -126,5 +126,10 @@ limitations under the License.
 
 [techdocs-image]: https://d3i6fms1cm1j0i.cloudfront.net/github/images/techdocs.png
 [setup-image]: https://d3i6fms1cm1j0i.cloudfront.net/github/images/setup.png
-[techdocs]: https://github.com/snowplow/snowplow/wiki/Snowplow-Google-Cloud-Storage-Loader
-[setup]: https://github.com/snowplow/snowplow/wiki/setting-up-snowplow-google-cloud-storage-loader
+[roadmap-image]: https://d3i6fms1cm1j0i.cloudfront.net/github/images/roadmap.png
+[contributing-image]: https://d3i6fms1cm1j0i.cloudfront.net/github/images/contributing.png
+
+[techdocs]: https://docs.snowplowanalytics.com/docs/pipeline-components-and-applications/loaders-storage-targets/google-cloud-storage-loader/
+[setup]: https://docs.snowplowanalytics.com/docs/getting-started-on-snowplow-open-source/setup-snowplow-on-gcp/setup-google-cloud-storage-gcs-destination/
+[roadmap]: https://github.com/snowplow/enrich/issues
+[contributing]: https://docs.snowplowanalytics.com/docs/contributing/
