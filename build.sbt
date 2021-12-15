@@ -2,7 +2,7 @@ import sbt._
 import Keys._
 
 val scioVersion = "0.11.1"
-val beamVersion = "2.19.0"
+val beamVersion = "2.34.0"
 val scalaMacrosVersion = "2.1.1"
 val slf4jVersion = "1.7.29"
 val scalatestVersion = "3.1.0"
@@ -68,7 +68,8 @@ lazy val root: Project = project
       "org.slf4j" % "slf4j-simple" % slf4jVersion,
       "org.scalatest" %% "scalatest" % scalatestVersion % Test,
       "org.scalatestplus" %% "mockito-3-2" % scalatestPlusVersion % Test
-    )
+    ),
+    resolvers += "Confluent Repository" at "https://packages.confluent.io/maven/"
   )
   .enablePlugins(JavaAppPackaging)
 
