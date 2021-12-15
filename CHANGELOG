@@ -1,4 +1,20 @@
-Version 0.3.1 (2020-03-??)
+Version 0.3.2 (2021-12-16)
+--------------------------
+Extend copyright to 2021 (#58)
+Update links in README (#57)
+Bump sbt-native-packager to 1.9.7 (#56)
+Use sbt dyn ver plugin (#55)
+Bump netty-codec to 4.1.68.Final (#54)
+Bump gson to 2.8.9 (#53)
+Bump scalatest to 3.1.0 (#52)
+Bump circe-parser to 0.14.1 (#51)
+Bump iglu-core-circe to 1.0.1 (#50)
+Bump beam-runners-google-cloud-dataflow-java to 2.34.0 (#49)
+Bump scio to 0.11.1 (#48)
+Migrate from travis to github actions (#47)
+Bump sbt to 1.5.6 (#46)
+
+Version 0.3.1 (2020-03-02)
 --------------------------
 Add support for GCP labels in dataflow launcher docker image (#42)
 Bump scio to 0.8.2 (#41)
