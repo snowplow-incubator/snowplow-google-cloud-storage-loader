@@ -1,7 +1,7 @@
 import sbt._
 import Keys._
 
-val scioVersion = "0.8.2"
+val scioVersion = "0.11.1"
 val beamVersion = "2.19.0"
 val scalaMacrosVersion = "2.1.1"
 val slf4jVersion = "1.7.29"
