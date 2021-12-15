@@ -7,7 +7,7 @@ val scalaMacrosVersion = "2.1.1"
 val slf4jVersion = "1.7.29"
 val scalatestVersion = "3.1.0"
 val scalatestPlusVersion = s"$scalatestVersion.0"
-val circe = "0.11.2"
+val circe = "0.14.1"
 val igluCore = "1.0.1"
 
 lazy val compilerOptions = Seq(
