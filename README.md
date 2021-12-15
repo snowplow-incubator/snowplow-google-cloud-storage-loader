@@ -30,46 +30,9 @@ sbt docker:publishLocal
 
 ## Running
 
-### Through the zip archive
-
-You can find the archive hosted on [our Bintray][bintray].
-
-Once unzipped the artifact can be run as follows:
-
-```bash
-./bin/snowplow-google-cloud-storage-loader \
-  --runner=DataFlowRunner \
-  --project=[PROJECT] \
-  --streaming=true \
-  --zone=europe-west2-a \
-  --inputSubscription=projects/[PROJECT]/subscriptions/[SUBSCRIPTION] \
-  --outputDirectory=gs://[BUCKET] \
-  --outputFilenamePrefix=output \ # optional
-  --shardTemplate=-W-P-SSSSS-of-NNNNN \ # optional
-  --outputFilenameSuffix=.txt \ # optional
-  --windowDuration=5 \ # optional, in minutes
-  --compression=none \ # optional, gzip, bz2 or none
-  --numShards=1 \ # optional
-  --dateFormat=YYYY/MM/dd/HH/ \ # optional
-  --labels={\"label\": \"value\"} \ #OPTIONAL
-  --partitionedOuptutDirectory=gs://[BUCKET]/[SUBDIR] # optional
-```
-
-To display the help message:
-
-```bash
-./bin/snowplow-google-cloud-storage-loader --help
-```
-
-To display documentation about Cloud Storage Loader-specific options:
-
-```bash
-./bin/snowplow-google-cloud-storage-loader --help=com.snowplowanalytics.storage.googlecloudstorage.loader.Options
-```
-
 ### Through a docker container
 
-You can also find the image on [our Bintray][bintray-docker].
+You can also find the image on [Docker hub][docker-hub].
 
 A container can be run as follows:
 
@@ -77,7 +40,7 @@ A container can be run as follows:
 docker run \
   -v $PWD/config:/snowplow/config \
   -e GOOGLE_APPLICATION_CREDENTIALS=/snowplow/config/credentials.json \ # if running outside GCP
-  snowplow-docker-registry.bintray.io/snowplow/snowplow-google-cloud-storage-loader:0.3.0 \
+  snowplow/snowplow-google-cloud-storage-loader:0.3.0 \
   --runner=DataFlowRunner \
   --jobName=[JOB-NAME] \
   --project=[PROJECT] \
@@ -99,14 +62,14 @@ docker run \
 To display the help message:
 
 ```bash
-docker run snowplow-docker-registry.bintray.io/snowplow/snowplow-google-cloud-storage-loader:0.3.0 \
+docker run snowplow/snowplow-google-cloud-storage-loader:0.3.0 \
   --help
 ```
 
 To display documentation about Cloud Storage Loader-specific options:
 
 ```bash
-docker run snowplow-docker-registry.bintray.io/snowplow/snowplow-google-cloud-storage-loader:0.3.0 \
+docker run snowplow/snowplow-google-cloud-storage-loader:0.3.0 \
   --help=com.snowplowanalytics.storage.googlecloudstorage.loader.Options
 ```
 
@@ -157,8 +120,7 @@ limitations under the License.
 [dataflow]: https://cloud.google.com/dataflow/
 [self-describing-json]: https://snowplowanalytics.com/blog/2014/05/15/introducing-self-describing-jsons/
 
-[bintray]: https://bintray.com/snowplow/snowplow-generic/snowplow-google-cloud-storage-loader
-[bintray-docker]: https://bintray.com/snowplow/registry/snowplow%3Asnowplow-google-cloud-storage-loader
+[docker-hub]: https://hub.docker.com/r/snowplow/snowplow-google-cloud-storage-loader
 
 [license]: http://www.apache.org/licenses/LICENSE-2.0
 
