@@ -30,7 +30,6 @@ lazy val compilerOptions = Seq(
 
 lazy val commonSettings = Defaults.coreDefaultSettings ++ Seq(
   organization := "com.snowplowanalytics",
-  version := "0.3.1",
   scalaVersion := "2.12.10",
   scalacOptions ++= compilerOptions,
   javacOptions ++= Seq("-source", "1.8", "-target", "1.8")
@@ -52,6 +51,10 @@ dockerCommands := dockerCommands.value.map{
   case ExecCmd("ENTRYPOINT", args) => ExecCmd("ENTRYPOINT", "docker-entrypoint.sh", args)
   case e => e
 }
+
+import sbtdynver.DynVerPlugin.autoImport._
+ThisBuild / dynverVTagPrefix := false // Otherwise git tags required to have v-prefix
+ThisBuild / dynverSeparator := "-" // to be compatible with docker
 
 lazy val root: Project = project
   .in(file("."))
