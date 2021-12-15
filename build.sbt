@@ -10,6 +10,7 @@ val scalatestPlusVersion = "3.1.2.0"
 val circe = "0.14.1"
 val igluCore = "1.0.1"
 val gson = "2.8.9" // An override, to mitigate a CVE
+val netty = "4.1.68.Final" // An override, to mitigate a CVE
 
 lazy val compilerOptions = Seq(
   "-target:jvm-1.8",
@@ -68,6 +69,7 @@ lazy val root: Project = project
       "com.snowplowanalytics" %% "iglu-core-circe" % igluCore,
       "org.slf4j" % "slf4j-simple" % slf4jVersion,
       "com.google.code.gson" % "gson" % gson,
+      "io.netty" % "netty-codec" % netty,
       "org.scalatest" %% "scalatest" % scalatestVersion % Test,
       "org.scalatestplus" %% "mockito-3-2" % scalatestPlusVersion % Test
     ),
