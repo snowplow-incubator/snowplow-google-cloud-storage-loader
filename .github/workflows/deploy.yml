@@ -54,3 +54,58 @@ jobs:
           platforms: linux/amd64,linux/arm64/v8
           tags: ${{ steps.meta.outputs.tags }}
           push: true
+
+  deploy_template:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: coursier/cache-action@v3
+      - name: Set up JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: 8
+      - name: Setup google credentials
+        uses: google-github-actions/setup-gcloud@master
+        with:
+          service_account_key: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS_JSON_BASE64 }}
+          project_id: snowplow-assets
+          export_default_credentials: true
+      - name: Get current version
+        id: ver
+        run: echo "::set-output name=tag::${GITHUB_REF#refs/tags/}"
+      - name: Publish asset
+        run: |
+          sbt "runMain com.snowplowanalytics.storage.googlecloudstorage.loader.CloudStorageLoader --project=snowplow-assets \
+            --templateLocation=gs://sp-hosted-assets/4-storage/snowplow-google-cloud-storage-loader/${{ steps.ver.outputs.tag }}/SnowplowGoogleCloudStorageLoaderTemplate-${{ steps.ver.outputs.tag }} \
+            --stagingLocation=gs://sp-hosted-assets/4-storage/snowplow-google-cloud-storage-loader/${{ steps.ver.outputs.tag }}/staging \
+            --runner=DataflowRunner \
+            --tempLocation=gs://sp-hosted-assets/tmp \
+            --autoscalingAlgorithm=THROUGHPUT_BASED \
+            --numWorkers=1 \
+            --numShards=1 \
+            --diskSizeGb=30 \
+            --workerMachineType=n1-standard-1 \
+            --region=europe-west1"
+
+  deploy_github:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: coursier/cache-action@v3
+      - name: Set up JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: 8
+      - name: Get current version
+        id: ver
+        run: echo "::set-output name=tag::${GITHUB_REF#refs/tags/}"
+      - name: Build asset
+        run: sbt universal:packageBin
+      - name: Create GitHub release & Attach artifacts
+        uses: softprops/action-gh-release@v1
+        with:
+          name: "Version ${{ steps.ver.outputs.tag }}"
+          tag_name: 
+          files: target/universal/snowplow-google-cloud-storage-loader-${{ steps.ver.outputs.tag }}.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
