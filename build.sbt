@@ -1,7 +1,7 @@
 import sbt._
 import Keys._
 
-val scioVersion = "0.11.1"
+val scioVersion = "0.11.5"
 val beamVersion = "2.34.0"
 val scalaMacrosVersion = "2.1.1"
 val slf4jVersion = "1.7.29"
@@ -9,7 +9,6 @@ val scalatestVersion = "3.2.10"
 val scalatestPlusVersion = "3.1.2.0"
 val circe = "0.14.1"
 val igluCore = "1.0.1"
-val gson = "2.8.9" // An override, to mitigate a CVE
 val netty = "4.1.68.Final" // An override, to mitigate a CVE
 
 lazy val compilerOptions = Seq(
@@ -72,7 +71,6 @@ lazy val root: Project = project
       "io.circe" %% "circe-parser" % circe,
       "com.snowplowanalytics" %% "iglu-core-circe" % igluCore,
       "org.slf4j" % "slf4j-simple" % slf4jVersion,
-      "com.google.code.gson" % "gson" % gson,
       "io.netty" % "netty-codec" % netty,
       "org.scalatest" %% "scalatest" % scalatestVersion % Test,
       "org.scalatestplus" %% "mockito-3-2" % scalatestPlusVersion % Test
