@@ -63,7 +63,8 @@ lazy val root: Project = project
     description := "Snowplow Google Cloud Storage Loader",
     publish / skip := true,
     libraryDependencies ++= Seq(
-      "com.spotify" %% "scio-core" % scioVersion,
+      ("com.spotify" %% "scio-core" % scioVersion)
+        .exclude("org.codehaus.jackson", "jackson-mapper-asl"), // address security vulnerabilities
       "com.spotify" %% "scio-test" % scioVersion % Test,
       "org.apache.beam" % "beam-runners-google-cloud-dataflow-java" % beamVersion,
       "io.circe" %% "circe-parser" % circe,
