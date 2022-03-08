@@ -44,7 +44,7 @@ lazy val macroSettings = Seq(
 
 import com.typesafe.sbt.packager.docker._
 dockerUsername := Some("snowplow")
-dockerBaseImage := "snowplow/k8s-dataflow:0.1.0"
+dockerBaseImage := "adoptopenjdk:11-jre-hotspot-focal"
 Docker / maintainer := "Snowplow Analytics Ltd. <support@snowplowanalytics.com>"
 Docker / daemonUser := "snowplow"
 Docker / daemonUserUid := None
