@@ -63,9 +63,11 @@ lazy val root: Project = project
     description := "Snowplow Google Cloud Storage Loader",
     publish / skip := true,
     libraryDependencies ++= Seq(
-      "com.spotify" %% "scio-core" % scioVersion,
+      ("com.spotify" %% "scio-core" % scioVersion)
+        .exclude("org.codehaus.jackson", "jackson-mapper-asl"), // address security vulnerabilities
       "com.spotify" %% "scio-test" % scioVersion % Test,
-      "org.apache.beam" % "beam-runners-google-cloud-dataflow-java" % beamVersion,
+      ("org.apache.beam" % "beam-runners-google-cloud-dataflow-java" % beamVersion)
+        .exclude("org.codehaus.jackson", "jackson-mapper-asl"), // address security vulnerabilities
       "io.circe" %% "circe-parser" % circe,
       "com.snowplowanalytics" %% "iglu-core-circe" % igluCore,
       "org.slf4j" % "slf4j-simple" % slf4jVersion,
@@ -85,7 +87,8 @@ lazy val repl: Project = project
     name := "repl",
     description := "Scio REPL for snowplow-google-cloud-storage-loader",
     libraryDependencies ++= Seq(
-      "com.spotify" %% "scio-repl" % scioVersion
+      ("com.spotify" %% "scio-repl" % scioVersion)
+        .exclude("org.codehaus.jackson", "jackson-mapper-asl"), // address security vulnerabilities
     ),
     Compile / mainClass := Some("com.spotify.scio.repl.ScioShell"),
     publish / skip := true
