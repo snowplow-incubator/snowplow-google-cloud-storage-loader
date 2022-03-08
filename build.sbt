@@ -43,15 +43,13 @@ lazy val macroSettings = Seq(
 )
 
 import com.typesafe.sbt.packager.docker._
-dockerUsername := Some("snowplow")
-dockerBaseImage := "snowplow/k8s-dataflow:0.1.0"
+dockerRepository := Some("snowplow")
+dockerBaseImage := "eclipse-temurin:8-jre-focal"
+Docker / packageName := "snowplow-google-cloud-storage-loader"
 Docker / maintainer := "Snowplow Analytics Ltd. <support@snowplowanalytics.com>"
 Docker / daemonUser := "snowplow"
-Docker / daemonUserUid := None
-dockerCommands := dockerCommands.value.map{
-  case ExecCmd("ENTRYPOINT", args) => ExecCmd("ENTRYPOINT", "docker-entrypoint.sh", args)
-  case e => e
-}
+Docker / defaultLinuxInstallLocation := "/home/snowplow"
+dockerUpdateLatest := true
 
 import sbtdynver.DynVerPlugin.autoImport._
 ThisBuild / dynverVTagPrefix := false // Otherwise git tags required to have v-prefix
