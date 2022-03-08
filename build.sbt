@@ -49,6 +49,10 @@ Docker / maintainer := "Snowplow Analytics Ltd. <support@snowplowanalytics.com>"
 Docker / daemonUser := "snowplow"
 Docker / defaultLinuxInstallLocation := "/home/snowplow"
 dockerUpdateLatest := true
+dockerCommands := dockerCommands.value.map{
+  case ExecCmd("ENTRYPOINT", args) => ExecCmd("ENTRYPOINT", "docker-entrypoint.sh", args)
+  case e => e
+}
 
 import sbtdynver.DynVerPlugin.autoImport._
 ThisBuild / dynverVTagPrefix := false // Otherwise git tags required to have v-prefix
