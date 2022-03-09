@@ -1,3 +1,12 @@
+Version 0.4.0 (2022-03-09)
+--------------------------
+Publish to github and sp-hosted-assets (#61)
+Remove jackson-mapper-asl transitive dependency (#68)
+Bump slf4j-simple to 1.7.36 (#67)
+Bump beam-runners-google-cloud-dataflow-java to 2.36.0 (#66)
+Bump scio to 0.11.5 (#65)
+Change Docker base image to eclipse-temurin:8-jre-focal (#63)
+
 Version 0.3.2 (2021-12-16)
 --------------------------
 Extend copyright to 2021 (#58)
