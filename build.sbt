@@ -9,6 +9,7 @@ val scalatestVersion = "3.2.10"
 val scalatestPlusVersion = "3.1.2.0"
 val circe = "0.14.1"
 val igluCore = "1.0.1"
+val jackson = "2.13.2.2" // An override, to mitigate a CVE
 
 lazy val compilerOptions = Seq(
   "-target:jvm-1.8",
@@ -70,6 +71,7 @@ lazy val root: Project = project
       "io.circe" %% "circe-parser" % circe,
       "com.snowplowanalytics" %% "iglu-core-circe" % igluCore,
       "org.slf4j" % "slf4j-simple" % slf4jVersion,
+      "com.fasterxml.jackson.core" % "jackson-databind" % jackson,
       "org.scalatest" %% "scalatest" % scalatestVersion % Test,
       "org.scalatestplus" %% "mockito-3-2" % scalatestPlusVersion % Test
     ),
