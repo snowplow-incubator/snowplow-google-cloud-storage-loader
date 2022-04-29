@@ -37,7 +37,6 @@ object Dependencies {
         .exclude("org.codehaus.jackson", "jackson-mapper-asl") // address security vulnerabilities
     val beam = ("org.apache.beam" % "beam-runners-google-cloud-dataflow-java" % V.beam)
         .exclude("org.codehaus.jackson", "jackson-mapper-asl") // address security vulnerabilities
-        .exclude("org.apache.beam", "beam-sdks-java-io-kafka")
 
     val circe    = "io.circe"                   %% "circe-parser"     % V.circe
     val igluCore = "com.snowplowanalytics"      %% "iglu-core-circe"  % V.igluCore
