@@ -15,7 +15,10 @@
 import sbt._
 import sbt.Keys._
 
+import com.typesafe.sbt.packager.archetypes.jar.LauncherJarPlugin.autoImport.packageJavaLauncherJar
 import com.typesafe.sbt.packager.docker.DockerPlugin.autoImport._
+import com.typesafe.sbt.packager.docker.DockerPermissionStrategy
+import com.typesafe.sbt.packager.docker.ExecCmd
 import com.typesafe.sbt.SbtNativePackager.autoImport._
 import com.typesafe.sbt.packager.linux.LinuxPlugin.autoImport._
 import sbtdynver.DynVerPlugin.autoImport._
@@ -82,6 +85,18 @@ object BuildSettings {
     dockerUpdateLatest := true
   )
 
+  lazy val dockerSettingsDistroless = Seq(
+    Docker / maintainer := "Snowplow Analytics Ltd. <support@snowplowanalytics.com>",
+    dockerBaseImage := "gcr.io/distroless/java11-debian11:nonroot",
+    Docker / daemonUser := "nonroot",
+    Docker / daemonGroup := "nonroot",
+    dockerRepository := Some("snowplow"),
+    Docker / daemonUserUid := None,
+    Docker / defaultLinuxInstallLocation := "/home/snowplow",
+    dockerEntrypoint := Seq("java", "-jar",s"/home/snowplow/lib/${(packageJavaLauncherJar / artifactPath).value.getName}"),
+    dockerPermissionStrategy := DockerPermissionStrategy.CopyChown,
+    dockerAlias := dockerAlias.value.copy(tag = dockerAlias.value.tag.map(t => s"$t-distroless")),
+  )
 
   lazy val macroSettings = Seq(
     libraryDependencies += Dependencies.Libraries.reflect % scalaVersion.value,
