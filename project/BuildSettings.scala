@@ -61,7 +61,8 @@ object BuildSettings {
         Dependencies.Libraries.scioTest,
         Dependencies.Libraries.scalatest,
         Dependencies.Libraries.mockito
-      )
+      ),
+      resolvers += "Confluent Repository" at "https://packages.confluent.io/maven/"
     )
 
   lazy val replSettings = Seq(
@@ -73,7 +74,7 @@ object BuildSettings {
 
   lazy val dockerSettingsFocal = Seq(
     dockerRepository := Some("snowplow"),
-    dockerBaseImage := "eclipse-temurin:8-jre-focal",
+    dockerBaseImage := "eclipse-temurin:11-jre-focal",
     Docker / packageName := "snowplow-google-cloud-storage-loader",
     Docker / maintainer := "Snowplow Analytics Ltd. <support@snowplowanalytics.com>",
     Docker / daemonUser := "snowplow",
