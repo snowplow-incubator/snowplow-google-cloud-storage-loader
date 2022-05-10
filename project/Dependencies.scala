@@ -27,6 +27,8 @@ object Dependencies {
     val circe         = "0.14.1"
     val igluCore      = "1.0.1"
     val jackson       = "2.13.2.2" // An override, to mitigate a CVE
+    val googleOauth   = "1.33.3" // An override, to mitigate a CVE
+    val guava         = "31.1-jre" // An override, to mitigate a CVE
     val paradise      = "2.1.1"
   }
 
@@ -38,12 +40,14 @@ object Dependencies {
     val beam = ("org.apache.beam" % "beam-runners-google-cloud-dataflow-java" % V.beam)
         .exclude("org.codehaus.jackson", "jackson-mapper-asl") // address security vulnerabilities
 
-    val circe    = "io.circe"                   %% "circe-parser"     % V.circe
-    val igluCore = "com.snowplowanalytics"      %% "iglu-core-circe"  % V.igluCore
-    val slf4j    = "org.slf4j"                  %  "slf4j-simple"     % V.slf4j
-    val jackson  = "com.fasterxml.jackson.core" %  "jackson-databind" % V.jackson
-    val paradise = "org.scalamacros"            %  "paradise"         % V.paradise
-    val reflect  = "org.scala-lang"             %  "scala-reflect"
+    val circe       = "io.circe"                   %% "circe-parser"       % V.circe
+    val igluCore    = "com.snowplowanalytics"      %% "iglu-core-circe"    % V.igluCore
+    val slf4j       = "org.slf4j"                  %  "slf4j-simple"       % V.slf4j
+    val jackson     = "com.fasterxml.jackson.core" %  "jackson-databind"   % V.jackson
+    val paradise    = "org.scalamacros"            %  "paradise"           % V.paradise
+    val googleOauth = "com.google.oauth-client"    % "google-oauth-client" % V.googleOauth
+    val guava       = "com.google.guava"           % "guava"               % V.guava
+    val reflect     = "org.scala-lang"             %  "scala-reflect"
 
     // Test
     val scioTest  = "com.spotify"       %% "scio-test"   % V.scio          % Test

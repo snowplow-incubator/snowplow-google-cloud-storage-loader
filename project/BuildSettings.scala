@@ -61,6 +61,8 @@ object BuildSettings {
         Dependencies.Libraries.igluCore,
         Dependencies.Libraries.slf4j,
         Dependencies.Libraries.jackson,
+        Dependencies.Libraries.googleOauth,
+        Dependencies.Libraries.guava,
         Dependencies.Libraries.scioTest,
         Dependencies.Libraries.scalatest,
         Dependencies.Libraries.mockito
