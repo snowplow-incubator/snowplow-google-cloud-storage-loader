@@ -35,6 +35,7 @@ object Dependencies {
   object Libraries {
     val scioCore = ("com.spotify" %% "scio-core" % V.scio)
         .exclude("org.codehaus.jackson", "jackson-mapper-asl") // address security vulnerabilities
+        .exclude("org.apache.beam", "beam-sdks-java-extensions-sql") // address security vulnerabilities
     val scioRepl = ("com.spotify" %% "scio-repl" % V.scio)
         .exclude("org.codehaus.jackson", "jackson-mapper-asl") // address security vulnerabilities
     val beam = ("org.apache.beam" % "beam-runners-google-cloud-dataflow-java" % V.beam)
