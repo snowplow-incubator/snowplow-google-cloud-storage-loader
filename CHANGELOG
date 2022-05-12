@@ -1,3 +1,16 @@
+Version 0.5.0 (2022-05-12)
+--------------------------
+Exclude beam-sdks-java-extensions-sql (#80)
+Bump google-oauth-client to 1.33.3 (#79)
+Bump scio to 0.11.7 (#78)
+Fix gcloud authorization in github action (#77)
+Publish distroless docker images (#75)
+Upgrade docker base image to JRE 11 (#74)
+Tidy up sbt project files (#73)
+Bump jackson-databind to 2.13.2.2 (#71)
+Remove explicit override of netty-codec version (#70)
+Bump beam to 2.38.0 (#69)
+
 Version 0.4.0 (2022-03-09)
 --------------------------
 Publish to github and sp-hosted-assets (#61)
