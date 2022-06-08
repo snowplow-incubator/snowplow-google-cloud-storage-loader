@@ -38,8 +38,10 @@ object Dependencies {
         .exclude("org.apache.beam", "beam-sdks-java-extensions-sql") // address security vulnerabilities
     val scioRepl = ("com.spotify" %% "scio-repl" % V.scio)
         .exclude("org.codehaus.jackson", "jackson-mapper-asl") // address security vulnerabilities
+        .exclude("org.apache.beam", "beam-sdks-java-extensions-sql") // address security vulnerabilities
     val beam = ("org.apache.beam" % "beam-runners-google-cloud-dataflow-java" % V.beam)
         .exclude("org.codehaus.jackson", "jackson-mapper-asl") // address security vulnerabilities
+        .exclude("org.apache.beam", "beam-sdks-java-extensions-sql") // address security vulnerabilities
 
     val circe       = "io.circe"                   %% "circe-parser"       % V.circe
     val igluCore    = "com.snowplowanalytics"      %% "iglu-core-circe"    % V.igluCore
