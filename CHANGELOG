@@ -1,3 +1,7 @@
+Version 0.5.1 (2022-06-08)
+--------------------------
+Exclude beam-sdks-java-extensions-sql from scio-repl and beam (#81)
+
 Version 0.5.0 (2022-05-12)
 --------------------------
 Exclude beam-sdks-java-extensions-sql (#80)
