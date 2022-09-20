@@ -1,3 +1,7 @@
+Version 0.5.3 (2022-09-20)
+--------------------------
+Bump snakeyaml to 1.32 (#85)
+
 Version 0.5.2 (2022-07-20)
 --------------------------
 Ensure docker image has latest openssl and libfreetype6 versions (#83)
