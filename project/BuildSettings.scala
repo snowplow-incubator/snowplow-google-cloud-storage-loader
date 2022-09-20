@@ -63,6 +63,7 @@ object BuildSettings {
         Dependencies.Libraries.jackson,
         Dependencies.Libraries.googleOauth,
         Dependencies.Libraries.guava,
+        Dependencies.Libraries.snakeYaml,
         Dependencies.Libraries.scioTest,
         Dependencies.Libraries.scalatest,
         Dependencies.Libraries.mockito
