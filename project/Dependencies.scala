@@ -26,7 +26,7 @@ object Dependencies {
     val scalatestPlus = "3.1.2.0"
     val circe         = "0.14.1"
     val igluCore      = "1.0.1"
-    val jackson       = "2.13.2.2" // An override, to mitigate a CVE
+    val jackson       = "2.13.4.2" // An override, to mitigate a CVE
     val googleOauth   = "1.33.3" // An override, to mitigate a CVE
     val guava         = "31.1-jre" // An override, to mitigate a CVE
     val snakeYaml     = "1.32" // An override, to mitigate a CVE
