@@ -18,7 +18,7 @@ import sbt._
 object Dependencies {
 
   object V {
-    val scio          = "0.11.7"
+    val scio          = "0.12.0"
     val beam          = "2.38.0"
     val scalaMacros   = "2.1.1"
     val slf4j         = "1.7.36"
