@@ -29,7 +29,7 @@ object Dependencies {
     val jackson       = "2.13.4.2" // An override, to mitigate a CVE
     val googleOauth   = "1.34.0" // An override, to mitigate a CVE
     val guava         = "31.1-jre" // An override, to mitigate a CVE
-    val snakeYaml     = "1.32" // An override, to mitigate a CVE
+    val snakeYaml     = "1.33" // An override, to mitigate a CVE
     val paradise      = "2.1.1"
   }
 
