@@ -40,7 +40,7 @@ A container can be run as follows:
 docker run \
   -v $PWD/config:/snowplow/config \
   -e GOOGLE_APPLICATION_CREDENTIALS=/snowplow/config/credentials.json \ # if running outside GCP
-  snowplow/snowplow-google-cloud-storage-loader:0.5.3 \
+  snowplow/snowplow-google-cloud-storage-loader:0.5.4 \
   --runner=DataFlowRunner \
   --jobName=[JOB-NAME] \
   --project=[PROJECT] \
@@ -62,14 +62,14 @@ docker run \
 To display the help message:
 
 ```bash
-docker run snowplow/snowplow-google-cloud-storage-loader:0.5.3 \
+docker run snowplow/snowplow-google-cloud-storage-loader:0.5.4 \
   --help
 ```
 
 To display documentation about Cloud Storage Loader-specific options:
 
 ```bash
-docker run snowplow/snowplow-google-cloud-storage-loader:0.5.3 \
+docker run snowplow/snowplow-google-cloud-storage-loader:0.5.4 \
   --help=com.snowplowanalytics.storage.googlecloudstorage.loader.Options
 ```
 
