@@ -45,7 +45,8 @@ docker run \
   --jobName=[JOB-NAME] \
   --project=[PROJECT] \
   --streaming=true \
-  --zone=[ZONE] \
+  --workerZone=[ZONE] \
+  --region=[REGION] \ # where to place the bucket for staging files
   --inputSubscription=projects/[PROJECT]/subscriptions/[SUBSCRIPTION] \
   --outputDirectory=gs://[BUCKET] \
   --outputFilenamePrefix=output \ # optional
