@@ -5,8 +5,7 @@ lazy val root: Project = project
   .settings(BuildSettings.commonSettings)
   .settings(BuildSettings.macroSettings)
   .settings(BuildSettings.appSettings)
-  .settings(BuildSettings.dockerSettingsFocal)
-  .enablePlugins(JavaAppPackaging)
+  .enablePlugins(JavaAppPackaging, SnowplowDockerPlugin)
 
 lazy val distroless: Project = project
   .in(file("distroless"))
@@ -14,8 +13,7 @@ lazy val distroless: Project = project
   .settings(BuildSettings.commonSettings)
   .settings(BuildSettings.macroSettings)
   .settings(BuildSettings.appSettings)
-  .settings(BuildSettings.dockerSettingsDistroless)
-  .enablePlugins(DockerPlugin, LauncherJarPlugin)
+  .enablePlugins(JavaAppPackaging, SnowplowDistrolessDockerPlugin)
 
 lazy val repl: Project = project
   .in(file(".repl"))
