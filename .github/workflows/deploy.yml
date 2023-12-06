@@ -6,6 +6,29 @@ on:
       - '*'
 
 jobs:
+  run_snyk:
+    if: ${{ !contains(github.ref, 'rc') }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: coursier/cache-action@v3
+      - name: Set up JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: 8
+
+      - name: Build local image, which is needed to run Snyk
+        run: sbt "project distroless" docker:publishLocal
+
+      - name: Run Snyk to check for vulnerabilities
+        uses: snyk/actions/docker@master
+        with:
+          image: "snowplow/snowplow-google-cloud-storage-loader:${{ github.ref_name }}-distroless"
+          args: "--app-vulns --org=data-processing-new"
+          command: monitor
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
   deploy_docker:
     runs-on: ubuntu-latest
     steps:
