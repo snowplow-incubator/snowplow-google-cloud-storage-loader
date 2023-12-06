@@ -7,7 +7,7 @@ on:
 
 jobs:
   run_snyk:
-    if: ${{ !contains(github.ref, 'rc') }}
+    if: ${{ contains(github.ref, 'rc') }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -24,7 +24,7 @@ jobs:
         uses: snyk/actions/docker@master
         with:
           image: "snowplow/snowplow-google-cloud-storage-loader:${{ github.ref_name }}-distroless"
-          args: "--app-vulns --org=data-processing-new"
+          args: "--app-vulns --org=data-cap"
           command: monitor
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
