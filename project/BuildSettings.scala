@@ -65,6 +65,7 @@ object BuildSettings {
         Dependencies.Libraries.guava,
         Dependencies.Libraries.snakeYaml,
         Dependencies.Libraries.nettyCodec,
+        Dependencies.Libraries.orgJson,
         Dependencies.Libraries.scioTest,
         Dependencies.Libraries.scalatest,
         Dependencies.Libraries.mockito

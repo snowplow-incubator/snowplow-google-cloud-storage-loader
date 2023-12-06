@@ -31,6 +31,7 @@ object Dependencies {
     val guava         = "31.1-jre" // An override, to mitigate a CVE
     val snakeYaml     = "1.33" // An override, to mitigate a CVE
     val nettyCodec    = "4.1.101.Final" // An override, to mitigate a CVE
+    val orgJson       = "20231013" // An override, to mitigate a CVE
     val paradise      = "2.1.1"
   }
 
@@ -54,6 +55,7 @@ object Dependencies {
     val guava       = "com.google.guava"           % "guava"               % V.guava
     val snakeYaml   = "org.yaml"                   %  "snakeyaml"          % V.snakeYaml
     val nettyCodec  = "io.netty"                   % "netty-codec-http2"   % V.nettyCodec
+    val orgJson     = "org.json"                   % "json"                % V.orgJson
     val reflect     = "org.scala-lang"             %  "scala-reflect"
 
     // Test
