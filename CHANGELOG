@@ -1,3 +1,12 @@
+Version 0.5.5 (2023-12-07)
+--------------------------
+Bump scio to 0.13.6 (#95)
+Bump beam to 2.52.0 (#95)
+Bump netty to 4.1.101.Final (#95)
+Bump org.json.json to 20231013 (#95)
+Use sbt-snowplow-release to build docker images (#96)
+Scan Docker images in Snyk Github action (#97)
+
 Version 0.5.4 (2022-11-03)
 --------------------------
 Bump snakeyaml to 1.33 (#91)
