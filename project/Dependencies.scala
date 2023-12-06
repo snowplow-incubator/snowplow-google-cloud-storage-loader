@@ -30,6 +30,7 @@ object Dependencies {
     val googleOauth   = "1.34.0" // An override, to mitigate a CVE
     val guava         = "31.1-jre" // An override, to mitigate a CVE
     val snakeYaml     = "1.33" // An override, to mitigate a CVE
+    val nettyCodec    = "4.1.101.Final" // An override, to mitigate a CVE
     val paradise      = "2.1.1"
   }
 
@@ -52,6 +53,7 @@ object Dependencies {
     val googleOauth = "com.google.oauth-client"    % "google-oauth-client" % V.googleOauth
     val guava       = "com.google.guava"           % "guava"               % V.guava
     val snakeYaml   = "org.yaml"                   %  "snakeyaml"          % V.snakeYaml
+    val nettyCodec  = "io.netty"                   % "netty-codec-http2"   % V.nettyCodec
     val reflect     = "org.scala-lang"             %  "scala-reflect"
 
     // Test
