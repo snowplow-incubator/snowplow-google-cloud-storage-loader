@@ -18,45 +18,36 @@ import sbt._
 object Dependencies {
 
   object V {
-    val scio          = "0.13.6"
-    val beam          = "2.52.0"
+    val scio          = "0.14.8"
+    val beam          = "2.60.0"
     val scalaMacros   = "2.1.1"
     val slf4j         = "1.7.36"
     val scalatest     = "3.2.10"
     val scalatestPlus = "3.1.2.0"
-    val circe         = "0.14.1"
-    val igluCore      = "1.0.1"
-    val jackson       = "2.13.4.2" // An override, to mitigate a CVE
-    val googleOauth   = "1.34.0" // An override, to mitigate a CVE
-    val guava         = "31.1-jre" // An override, to mitigate a CVE
-    val snakeYaml     = "1.33" // An override, to mitigate a CVE
-    val nettyCodec    = "4.1.101.Final" // An override, to mitigate a CVE
-    val orgJson       = "20231013" // An override, to mitigate a CVE
+    val circe         = "0.14.3"
+    val igluCore      = "1.1.3"
+    val jackson       = "2.17.2" // An override, to mitigate a CVE
+    val nettyCodec    = "4.1.108.Final" // An override, to mitigate a CVE
+    val avro          = "1.11.4" // An override, to mitigate a CVE
+    val protobuf      = "3.25.5" // An override, to mitigate a CVE
+    val kaml          = "0.53.0" // An override, to mitigate a CVE
     val paradise      = "2.1.1"
   }
 
   object Libraries {
-    val scioCore = ("com.spotify" %% "scio-core" % V.scio)
-        .exclude("org.codehaus.jackson", "jackson-mapper-asl") // address security vulnerabilities
-        .exclude("org.apache.beam", "beam-sdks-java-extensions-sql") // address security vulnerabilities
-    val scioRepl = ("com.spotify" %% "scio-repl" % V.scio)
-        .exclude("org.codehaus.jackson", "jackson-mapper-asl") // address security vulnerabilities
-        .exclude("org.apache.beam", "beam-sdks-java-extensions-sql") // address security vulnerabilities
-    val beam = ("org.apache.beam" % "beam-runners-google-cloud-dataflow-java" % V.beam)
-        .exclude("org.codehaus.jackson", "jackson-mapper-asl") // address security vulnerabilities
-        .exclude("org.apache.beam", "beam-sdks-java-extensions-sql") // address security vulnerabilities
-
-    val circe       = "io.circe"                   %% "circe-parser"       % V.circe
-    val igluCore    = "com.snowplowanalytics"      %% "iglu-core-circe"    % V.igluCore
-    val slf4j       = "org.slf4j"                  %  "slf4j-simple"       % V.slf4j
-    val jackson     = "com.fasterxml.jackson.core" %  "jackson-databind"   % V.jackson
-    val paradise    = "org.scalamacros"            %  "paradise"           % V.paradise
-    val googleOauth = "com.google.oauth-client"    % "google-oauth-client" % V.googleOauth
-    val guava       = "com.google.guava"           % "guava"               % V.guava
-    val snakeYaml   = "org.yaml"                   %  "snakeyaml"          % V.snakeYaml
-    val nettyCodec  = "io.netty"                   % "netty-codec-http2"   % V.nettyCodec
-    val orgJson     = "org.json"                   % "json"                % V.orgJson
-    val reflect     = "org.scala-lang"             %  "scala-reflect"
+    val beam        = "org.apache.beam"              % "beam-runners-google-cloud-dataflow-java" % V.beam
+    val scioCore    = "com.spotify"                  %% "scio-core"                              % V.scio
+    val scioRepl    = "com.spotify"                  %% "scio-repl"                              % V.scio
+    val circe       = "io.circe"                     %% "circe-parser"                           % V.circe
+    val igluCore    = "com.snowplowanalytics"        %% "iglu-core-circe"                        % V.igluCore
+    val slf4j       = "org.slf4j"                    %  "slf4j-simple"                           % V.slf4j
+    val paradise    = "org.scalamacros"              %  "paradise"                               % V.paradise
+    val jackson     = "com.fasterxml.jackson.module" %% "jackson-module-scala"                   % V.jackson
+    val avro        = "org.apache.avro"              %  "avro"                                   % V.avro
+    val protobuf    = "com.google.protobuf"          %  "protobuf-java-util"                     % V.protobuf
+    val nettyCodec  = "io.netty"                     %  "netty-codec-http2"                      % V.nettyCodec
+    val kaml        = "com.charleskorn.kaml"         %  "kaml"                                   % V.kaml
+    val reflect     = "org.scala-lang"               %  "scala-reflect"
 
     // Test
     val scioTest  = "com.spotify"       %% "scio-test"   % V.scio          % Test

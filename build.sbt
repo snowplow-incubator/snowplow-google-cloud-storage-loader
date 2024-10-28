@@ -1,5 +1,8 @@
 import sbt._
 
+// Without this we have a dependency conflict in repl subproject
+ThisBuild / libraryDependencySchemes += "com.github.luben"  % "zstd-jni" % VersionScheme.Always 
+
 lazy val root: Project = project
   .in(file("."))
   .settings(BuildSettings.commonSettings)
