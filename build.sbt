@@ -1,5 +1,7 @@
 import sbt._
 
+ThisBuild / libraryDependencySchemes += "com.github.luben"  % "zstd-jni" % VersionScheme.Always 
+
 lazy val root: Project = project
   .in(file("."))
   .settings(BuildSettings.commonSettings)
