@@ -39,7 +39,7 @@ object BuildSettings {
 
   lazy val commonSettings = Defaults.coreDefaultSettings ++ Seq(
     organization := "com.snowplowanalytics",
-    scalaVersion := "2.12.10",
+    scalaVersion := "2.12.21",
     scalacOptions ++= compilerOptions,
     javacOptions ++= Seq("-source", "1.8", "-target", "1.8")
   )
@@ -58,14 +58,14 @@ object BuildSettings {
         Dependencies.Libraries.igluCore,
         Dependencies.Libraries.slf4j,
         Dependencies.Libraries.jackson,
-        Dependencies.Libraries.avro,
-        Dependencies.Libraries.protobuf,
         Dependencies.Libraries.nettyCodec,
-        Dependencies.Libraries.kaml,
+        Dependencies.Libraries.nettyProxy,
+        Dependencies.Libraries.opentelemetry,
         Dependencies.Libraries.scioTest,
         Dependencies.Libraries.scalatest,
         Dependencies.Libraries.mockito
       ),
+      dependencyOverrides ++= Dependencies.wireOverrides,
       resolvers += "Confluent Repository" at "https://packages.confluent.io/maven/"
     )
 
