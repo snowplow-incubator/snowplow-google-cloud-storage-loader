@@ -10,12 +10,15 @@ jobs:
     if: ${{ !contains(github.ref, 'rc') }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: coursier/cache-action@v3
+      - uses: actions/checkout@v4
+      - uses: coursier/cache-action@v6
       - name: Set up JDK
-        uses: actions/setup-java@v1
+        uses: actions/setup-java@v4
         with:
-          java-version: 8
+          distribution: temurin
+          java-version: 21
+      - name: Set up sbt
+        uses: sbt/setup-sbt@v1
 
       - name: Build local image, which is needed to run Snyk
         run: sbt "project distroless" docker:publishLocal
@@ -32,12 +35,15 @@ jobs:
   deploy_docker:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: coursier/cache-action@v3
+      - uses: actions/checkout@v4
+      - uses: coursier/cache-action@v6
       - name: Set up JDK
-        uses: actions/setup-java@v1
+        uses: actions/setup-java@v4
         with:
-          java-version: 8
+          distribution: temurin
+          java-version: 21
+      - name: Set up sbt
+        uses: sbt/setup-sbt@v1
 
       - name: Get current version
         id: ver
@@ -55,7 +61,7 @@ jobs:
         with:
           images: snowplow/snowplow-google-cloud-storage-loader
           tags: |
-            type=raw,value=latest,enable=${{ !contains(steps.ver.outputs.tag, 'rc') }}
+            type=raw,value=latest,enable=${{ !contains(steps.ver.outputs.tag, 'rc') && !contains(steps.ver.outputs.tag, 'dev') }}
             type=raw,value=${{ steps.ver.outputs.tag }}
           flavor: |
             latest=false
@@ -66,7 +72,7 @@ jobs:
         with:
           images: snowplow/snowplow-google-cloud-storage-loader
           tags: |
-            type=raw,value=latest-distroless,enable=${{ !contains(steps.ver.outputs.tag, 'rc') }}
+            type=raw,value=latest-distroless,enable=${{ !contains(steps.ver.outputs.tag, 'rc') && !contains(steps.ver.outputs.tag, 'dev') }}
             type=raw,value=${{ steps.ver.outputs.tag }}-distroless
           flavor: |
             latest=false
@@ -104,12 +110,15 @@ jobs:
   deploy_template:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: coursier/cache-action@v3
+      - uses: actions/checkout@v4
+      - uses: coursier/cache-action@v6
       - name: Set up JDK
-        uses: actions/setup-java@v1
+        uses: actions/setup-java@v4
         with:
-          java-version: 8
+          distribution: temurin
+          java-version: 21
+      - name: Set up sbt
+        uses: sbt/setup-sbt@v1
       - name: Authorize gcp sdk
         id: auth
         uses: 'google-github-actions/auth@v0'
@@ -139,12 +148,15 @@ jobs:
   deploy_github:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: coursier/cache-action@v3
+      - uses: actions/checkout@v4
+      - uses: coursier/cache-action@v6
       - name: Set up JDK
-        uses: actions/setup-java@v1
+        uses: actions/setup-java@v4
         with:
-          java-version: 8
+          distribution: temurin
+          java-version: 21
+      - name: Set up sbt
+        uses: sbt/setup-sbt@v1
       - name: Get current version
         id: ver
         run: echo "::set-output name=tag::${GITHUB_REF#refs/tags/}"
