@@ -18,21 +18,30 @@ import sbt._
 object Dependencies {
 
   object V {
-    val scio          = "0.14.8"
-    val beam          = "2.60.0"
+    val scio          = "0.15.7"
+    val beam          = "2.74.0"
     val scalaMacros   = "2.1.1"
     val slf4j         = "1.7.36"
     val scalatest     = "3.2.10"
     val scalatestPlus = "3.1.2.0"
     val circe         = "0.14.3"
     val igluCore      = "1.1.3"
-    val jackson       = "2.17.2" // An override, to mitigate a CVE
-    val nettyCodec    = "4.1.108.Final" // An override, to mitigate a CVE
-    val avro          = "1.11.4" // An override, to mitigate a CVE
-    val protobuf      = "3.25.5" // An override, to mitigate a CVE
-    val kaml          = "0.53.0" // An override, to mitigate a CVE
+    val jackson       = "2.18.7" // An override, to mitigate a CVE
+    val nettyCodec    = "4.1.135.Final" // An override, to mitigate a CVE
+    val opentelemetry = "1.62.0" // An override, to mitigate a CVE
+    val wire          = "6.3.0"  // An override, to mitigate a CVE (wire-runtime)
     val paradise      = "2.1.1"
   }
+
+  // wire-runtime / wire-runtime-jvm (pulled transitively via Beam's protobuf
+  // extension -> apicurio) carry CVEs only fixed in the 6.x line. wire requires
+  // a single version across its modules, so every wire artifact in the graph is
+  // forced to V.wire. wire-grpc-server / wire-grpc-server-generator have no 6.x
+  // release and are no longer pulled once wire-grpc-client is at 6.x.
+  val wireOverrides = Seq(
+    "wire-compiler", "wire-grpc-client-jvm", "wire-java-generator", "wire-kotlin-generator",
+    "wire-runtime", "wire-runtime-jvm", "wire-schema", "wire-schema-jvm", "wire-swift-generator"
+  ).map(a => "com.squareup.wire" % a % V.wire)
 
   object Libraries {
     val beam        = "org.apache.beam"              % "beam-runners-google-cloud-dataflow-java" % V.beam
@@ -43,10 +52,9 @@ object Dependencies {
     val slf4j       = "org.slf4j"                    %  "slf4j-simple"                           % V.slf4j
     val paradise    = "org.scalamacros"              %  "paradise"                               % V.paradise
     val jackson     = "com.fasterxml.jackson.module" %% "jackson-module-scala"                   % V.jackson
-    val avro        = "org.apache.avro"              %  "avro"                                   % V.avro
-    val protobuf    = "com.google.protobuf"          %  "protobuf-java-util"                     % V.protobuf
     val nettyCodec  = "io.netty"                     %  "netty-codec-http2"                      % V.nettyCodec
-    val kaml        = "com.charleskorn.kaml"         %  "kaml"                                   % V.kaml
+    val nettyProxy  = "io.netty"                     %  "netty-handler-proxy"                    % V.nettyCodec
+    val opentelemetry  = "io.opentelemetry"          %  "opentelemetry-api"                      % V.opentelemetry
     val reflect     = "org.scala-lang"               %  "scala-reflect"
 
     // Test
