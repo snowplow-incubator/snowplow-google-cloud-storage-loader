@@ -61,7 +61,7 @@ jobs:
         with:
           images: snowplow/snowplow-google-cloud-storage-loader
           tags: |
-            type=raw,value=latest,enable=${{ !contains(steps.ver.outputs.tag, 'rc') }}
+            type=raw,value=latest,enable=${{ !contains(steps.ver.outputs.tag, 'rc') && !contains(steps.ver.outputs.tag, 'dev') }}
             type=raw,value=${{ steps.ver.outputs.tag }}
           flavor: |
             latest=false
@@ -72,7 +72,7 @@ jobs:
         with:
           images: snowplow/snowplow-google-cloud-storage-loader
           tags: |
-            type=raw,value=latest-distroless,enable=${{ !contains(steps.ver.outputs.tag, 'rc') }}
+            type=raw,value=latest-distroless,enable=${{ !contains(steps.ver.outputs.tag, 'rc') && !contains(steps.ver.outputs.tag, 'dev') }}
             type=raw,value=${{ steps.ver.outputs.tag }}-distroless
           flavor: |
             latest=false
